@@ -1,0 +1,10 @@
+frame_size 24 24
+texture_offset 0 0
+
+looped true
+
+time 0.60
+time 0.05
+time 0.05
+time 0.05
+time 0.05

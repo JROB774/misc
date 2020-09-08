@@ -1,0 +1,37 @@
+# This needs to be at the top or else when set to false you'll still get some logs.
+enable_debug_logging true
+enable_hotloading true
+enable_console true
+
+refresh_rate 60.0
+
+window_title "Weekly Game Jam 59"
+window_start_width 640
+window_start_height 480
+
+viewport_width 320
+viewport_height 240
+
+border_clear_color 0 0 0 255
+viewport_clear_color 255 0 255 255
+
+# Only mixer_tracks sound_volume, and music_volume will update in real-time because the rest
+# need a full reset of the audio system. It is unlikely these values need to change anyway.
+mixer_frequency 22050
+mixer_channels 2
+mixer_chunksize 2048
+mixer_tracks 32
+
+sound_volume 128
+music_volume 128
+
+console_mini_height 0.33
+console_large_height 0.80
+console_left_padding 2
+console_bottom_padding 0
+console_input_color 245 245 245 255
+console_history_color 165 165 165 255
+console_back_color 0 0 0 220
+console_scroll_speed 10.0
+console_cursor_blink_interval 0.5
+console_text_scale 1.0

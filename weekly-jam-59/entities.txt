@@ -1,0 +1,18 @@
+OVERWORLD:
+[X] Scrunt       - Pick a direction walk, stop, repeat.
+[-] Digglydoo    - Goes underground, leaves, trail, pops up and ries a shot.
+[ ] Chipo        - Leaps into the air then you see his shadow and he falls down.
+[-] Scrimbat     - Fly around generally towards the player. (not effected by solid tiles).
+- ...
+
+DUNGEON:
+[ ] Spike Block  - Goes straight at player stops at walls (hurt all enemies).
+[X] Boney Scrunt - Chases you and does contact damage. -- Slime
+[ ] Snoteleks    - Stand in spot and throw bones, then hops to new spot.
+
+OTHER:
+[X] Transporter  - Teleports to a position within a zone (with a fade out/in).
+
+FINAL BOSS:
+[X] Final boss doesn't attack you (he is the pacifist).
+[X] Leaves you thinking.

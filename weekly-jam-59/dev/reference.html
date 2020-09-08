@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>TCE: Reference Manual</title>
+	</head>
+	<style type="text/css">
+		ol { padding-left: 20px; }
+		.function
+		{
+			margin: 12px 5px;
+			padding: 4px 8px;
+
+			background-color: #EEE;
+		}
+		.function-simple
+		{
+			margin: 4px 5px;
+			padding: 2px 8px;
+
+			background-color: #EEE;
+		}
+		.function p,
+		.function-simple p
+		{
+			margin: 0;
+			padding: 0;
+		}
+		strong.code { font-size: 1.1em; }
+		.code { font-family: monospace; }
+		.separator { height: 12px; }
+	</style>
+	<body>
+		<h1 style="margin-bottom: 6px;">TCE: Reference Manual</h1>
+		<h2 style="margin-top: 0;">Documentation for the TCE Game Jam Engine</h2>
+		<hr/>
+		<h2 style="margin-bottom: 6px;" id="contents">Contents</h2>
+		<ol style="margin-top: 0;">
+			<li><a href="#how_to_use">How to Use</a></li>
+			<ol>
+				<li><a href="#variable_tweak_file">Variable Tweak File</a></li>
+				<li><a href="#font_file_format">Font File Format</a></li>
+				<li><a href="#animation_file_format">Animation File Format</a></li>
+				<li><a href="#main_lua_script">Main Lua Script</a></li>
+				<li><a href="#debug_console">Debug Console</a></li>
+			</ol>
+			<li><a href="#simple_api_reference">Simple API Reference</a></li>
+			<li><a href="#detailed_api_reference">Detailed API Reference</a></li>
+			<ol>
+				<li><a href="#detailed_texture_api">Texture</li></a>
+				<li><a href="#detailed_animation_api">Animation</a></li>
+				<li><a href="#detailed_font_api">Font</a></li>
+				<li><a href="#detailed_sound_api">Sound</a></li>
+				<li><a href="#detailed_event_api">Event</a></li>
+				<li><a href="#detailed_primitve_api">Primitive</a></li>
+				<li><a href="#detailed_window_api">Window</a></li>
+				<li><a href="#detailed_vector2d_api">Vector 2D</a></li>
+				<li><a href="#detailed_collision_api">Collision</a></li>
+				<li><a href="#detailed_utility_api">Utility</a></li>
+			</ol>
+			<li><a href="#constants">Constants</a></li>
+			<ol>
+				<li><a href="#keycodes">Keycodes</a></li>
+				<li><a href="#buttons">Buttons</a></li>
+				<li><a href="#math_constants">Math Constants</a></li>
+				<li><a href="#render_flips">Render Flips</a></li>
+			</ol>
+			<li><a href="#console_commands">Console Commands</a></li>
+			<ol>
+				<li><a href="#console_basic_usage">Basic Usage</a></li>
+				<li><a href="#adding_console_commands">Adding Console Commands</a></li>
+			</ol>
+		</ol>
+		<h2 id="how_to_use">How to Use</h2>
+		<h3 id="variable_tweak_file">Variable Tweak File</h3>
+		<p>
+			The variable tweak file contains a number of engine variables that can be modified at run-time for easy tweaking, without recompiling.<br/>
+			The variables present in the file and what they modify are as follows:
+		</p>
+		<div class="function-simple"><strong class="code">refresh_rate</strong> -- The rate at which the game updates and renders.</div>
+		<div class="function-simple"><strong class="code">window_title</strong> -- The title of the window.</div>
+		<div class="function-simple"><strong class="code">window_start_width</strong> -- The starting width of the window.</div>
+		<div class="function-simple"><strong class="code">window_start_height</strong> -- The starting height of the window.</div>
+		<div class="function-simple"><strong class="code">viewport_width</strong> -- The width of the actual screen render contents (also the minimum width of the window).</div>
+		<div class="function-simple"><strong class="code">viewport_height</strong> -- The height of the actual screen render contents (also the minimum height of the window).</div>
+		<div class="function-simple"><strong class="code">border_clear_color</strong> -- The color to fill the area outside the viewport with at the start of each update.</div>
+		<div class="function-simple"><strong class="code">viewport_clear_color</strong> -- The color to fill the viewport area with at the start of each update.</div>
+		<div class="function-simple"><strong class="code">mixer_frequency</strong> -- The frequency to play-back sounds and music (requires restart to take effect).</div>
+		<div class="function-simple"><strong class="code">mixer_channels</strong> -- The number of audio channels, mono, stereo, etc.(requires restart to take effect).</div>
+		<div class="function-simple"><strong class="code">mixer_chunksize</strong> -- The quality and latency of sound play-back (requires restart to take effect).</div>
+		<div class="function-simple"><strong class="code">mixer_tracks</strong> -- The number of unique tracks that sounds can play on.</div>
+		<div class="function-simple"><strong class="code">mixer_volume</strong> -- The current volume to play-back auido.</div>
+		<div class="function-simple"><strong class="code">console_mini_height</strong> -- The height of the console when in its small state.</div>
+		<div class="function-simple"><strong class="code">console_large_height</strong> -- The height of the console when in its large state.</div>
+		<div class="function-simple"><strong class="code">console_left_padding</strong> -- How far from the left to begin drawing text.</div>
+		<div class="function-simple"><strong class="code">console_bottom_padding</strong> -- How far from the bottom to begin drawing text.</div>
+		<div class="function-simple"><strong class="code">console_input_color</strong> -- The color to draw the current input text line in.</div>
+		<div class="function-simple"><strong class="code">console_history_color</strong> -- The color to draw the history text lines in.</div>
+		<div class="function-simple"><strong class="code">console_back_color</strong> -- The color to draw the console background in.</div>
+		<div class="function-simple"><strong class="code">console_scroll_speed</strong> -- The speed at which the console moves between states (set to <span class="code">0</span> for instant snapping).</div>
+		<div class="function-simple"><strong class="code">console_cursor_blink_interval</strong> -- The interval at which the console cursor blinks at.</div>
+		<div class="function-simple"><strong class="code">enable_hotloading</strong> -- Whether to use the asset hotloading system or not.</div>
+		<div class="function-simple"><strong class="code">enable_debug_console</strong> -- Whether to use the debug console system or not.</div>
+		<h3 id="font_file_format">Font File Format</h3>
+		<p>
+			Font files can be found in the <span class="code">"data/fonts/"</span> directory.<br/>
+			The custom file format for loading in monospace bitmap fonts for the game to use:
+		</p>
+		<div class="function-simple"><strong class="code">glyph_size</strong> -- The size of the glyphs that make up the font.</div>
+		<div class="function-simple"><strong class="code">glyph_cache</strong> -- The texture used to represent the various glyphs (loaded from the directory <span class="code">"data/textures/"</span>.</div>
+		<p>
+			An example font file can be seen below:
+		</p>
+		<div class="function code">
+			# This is a comment!<br/>
+			glyph_size 8 16<br/>
+			glyph_cache "console.png"
+		</div>
+		<p>
+			This creates a font using the "console.png" glyph-set with each glyph being 8x16 pixels in size.
+		</p>
+		<h3 id="animation_file_format">Animation File Format</h3>
+		<p>
+			Animation files can be found in the <span class="code">"data/animations/"</span> directory.<br/>
+			The custom file format for loading in frame-by-frame animations for the game to use:
+		</p>
+		<div class="function-simple"><strong class="code">texture_offset</strong> -- The offset in the texture file where the animation will begin clipping frames.</div>
+		<div class="function-simple"><strong class="code">frame_size</strong> -- The size of each of the frames that make up the animation.</div>
+		<div class="function-simple"><strong class="code">looped</strong> -- A flag stating whether the animation should loop or not.</div>
+		<div class="function-simple"><strong class="code">time</strong> -- How long a key frame should play for, in seconds. Each instance of the <strong class="code">time</strong> keyword in the file is a new key frame for the animation.</div>
+		<p>
+			An example of an animation file can be seen below:
+		</p>
+		<div class="function code">
+			# This is a comment!<br/>
+			texture_offset 0 0<br/>
+			frame_size 0 0<br/>
+			<br/>
+			looped true<br/>
+			<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+			time 0.3<br/>
+		</div>
+		<p>
+			This creates a 7-frame looped animation with frames starting at position (0,0) of size (100,100) where each frame is 0.3 seconds long.<br/>
+			Frames are clipped from left-to-right in a straight line from the <span class="code">texture_offset</span> position.<br/>
+			<br/>
+			If you are wondering how to associate an animation with a texture, that is handled in code. See the API function: <strong class="code"><a href="#render_animated_texture">TCE.RenderAnimatedTexture()</a></strong>
+		</p>
+		<h3 id="main_lua_script">Main Lua Scrupt</h3>
+		<p>
+			The <span class="code">"data/scripts/main.lua"</span> file is the core of any game written in the engine. This is the file that the engine looks for as a start-point and to execute.<br/>
+			The basic template for the <span class="code">main.lua</span> file is as follows:
+		</p>
+		<div class="function code">
+			local TCE = require("data.scripts.tce.tce")<br/>
+			<br/>
+			function Initialize ()<br/>
+			&emsp;-- ...<br/>
+			end<br/>
+			<br/>
+			function Update (_dt)<br/>
+			&emsp;-- ...<br/>
+			end<br/>
+			<br/>
+			function Render ()<br/>
+			&emsp;-- ...<br/>
+			end
+		</div>
+		<p>
+			After loading the main script the game will execute the <span class="code">Initialize()</span> function to setup the game. Then the engine will then proceed to call <span class="code">Update()</span> and <span class="code">Render()</span> for evey cycle of the game loop.<br/>
+			The line <span class="code">local TCE = require("data.scripts.tce.tce")</span> at the top of the file loads the engine's API into local scope for faster access of all the functions, constants, etc. The API will always be accessed through this local table.<br/>
+			The <span class="code">_dt</span> variable passed to the <span class="code">Update()</span> function is the frame's delta time, passed from the engine. The game can use this to ensure proper frame-independent timing and logic.<br/>
+			<br/>
+			Some important things to take note of when programming in the main Lua script are as follows:<br/>
+			<em>
+			&emsp;1.) The main Lua script is hotloaded so saving any changes made whilst running the game will update in real-time.<br/>
+			&emsp;2.) The <span class="code">Initialize()</span> function is only called once at start-up and, subsequent hotloads will not call it again.<br/>
+			&emsp;3.) No global/persistent state should be stored within the main Lua script itself!<br/>
+			</em>
+			<br/>
+			The reasoning for points 2.) and 3.) are because of the fact that the file is hotloaded.<br/>
+			If <span class="code">Initialize()</span> were to be called upon saving changes then the game would reset each time, making issues difficult to debug.<br/>
+			And if persistent state were to be stored in the main Lua script then it would be overwritten when the file is reloaded.<br/>
+			<br/>
+			The solutions for issues 2.) and 3.) are as follows:<br/>
+			&emsp;2.) <strong>[NOTE: Currently not implemented! Soon there will be a feature to do a reload of the cache when the developer wants, without needing to close and reopen the game!]</strong><br/>
+			&emsp;3.) Store the game state globally in other script file(s) that are then required by the main Lua script. This would look like so:
+		</p>
+		<div class="function code">
+			[[ data.scripts.state ]]<br/>
+			<br/>
+			my_entity = { x=0, y=0 }<br/>
+			<br/>
+			[[ data.scripts.main]]<br/>
+			<br/>
+			local TCE = require("data.scripts.tce.tce")<br/>
+			require(data.scripts.game_state)
+			<br/>
+			function Initialize ()<br/>
+			&emsp;-- ...<br/>
+			end<br/>
+			<br/>
+			function Update (_dt)<br/>
+			&emsp;-- my_entity.x = (do some calculation)<br/>
+			&emsp;-- my_entity.y = (do some calculation)<br/>
+			end<br/>
+			<br/>
+			function Render ()<br/>
+			&emsp;-- ...<br/>
+			end
+		</div>
+		<p>
+			This way the global game state remains persistent but the update and render logic can be dynamically reloaded.
+		</p>
+		<h2 id="debug_console">Debug Console</h2>
+		<h3 id="console_basic_usage">Basic Usage</h3>
+		<p>
+			The debug console can be used to run various debug commands to make testing the game easier.<br/>
+			The console can be turned on using ` this will open it in a small state. Pressing it again will make the console large, and once more will close it.<br/>
+			<br/>
+			The console can be controlled using the following inputs:<br/>
+			<br/>
+			<em class="code">Left</em> -- Move the cursor to the left.<br/>
+			<em class="code">Right</em> -- Move the cursor to thr right.<br/>
+			<em class="code">Up</em> -- Cycle up through the history.<br/>
+			<em class="code">Down</em> -- Cycle down through the history.<br/>
+			<em class="code">Escape</em> -- Clear the current input.<br/>
+			<em class="code">Enter</em> -- Enter the current input.<br/>
+			<em class="code">Backspace</em> -- Delete character before the cursor.<br/>
+			<em class="code">Delete</em> -- Delete character after the cursor.<br/>
+		</p>
+		<h3 id="adding_console_commands">Adding Console Commands</h3>
+		<p>
+			Console commands can be added by modifying the <em class="code">Console</em> module and adding new function, new name of the function is the name of the command.<br/>
+			An example of adding a console command is as follows:
+		</p>
+		<div class="function">
+			function Console.add(a, b)<br/>
+			&emsp;print(a + b)<br/>
+			end
+		</div>
+		<p>
+			This console command could then be executed by writing <span class="code">add 10 20</span> in the console.
+		</p>
+		<h2 id="simple_api_reference">Simple API Reference</h2>
+		<h3>Texture</h3>
+		<div class="function-simple"><strong class="code"><a href="#load_texture_from_file">texture_handle = TCE.LoadTextureFromFile(filename)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_texture">TCE.RenderTexture(texture_handle, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_animated_texture">TCE.RenderAnimatedTexture(texture_handle, animation_handle, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#set_texture_color">TCE.SetTextureColor(texture_handle, color_string)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_texture_width">texture_width = TCE.GetTextureWidth(texture_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_texture_height">texture_height = TCE.GetTextureHeight(texture_handle)</a></strong></div>
+		<h3>Animation</h3>
+		<div class="function-simple"><strong class="code"><a href="#load_animation_from_file">animation_handle = TCE.LoadAnimationFromFile(filename)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#pause_animation">TCE.PauseAnimation(animation_handle, pause)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#animation_is_paused">paused = TCE.AnimationIsPaused(animation_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#reset_animation">TCE.ResetAnimation(animation_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_animation_frame_width">frame_width = TCE.GetAnimationFrameWidth(animation_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_animation_frame_height">frame_height = TCE.GetAnimationFrameHeight(animation_handle)</a></strong></div>
+		<h3>Font</h3>
+		<div class="function-simple"><strong class="code"><a href="#load_font_from_file">font_handle = TCE.LoadFontFromFile(filename)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_text">TCE.RenderText(font_handle, text, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#set_font_color">TCE.SetFontColor(font_handle, color_string)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_font_glyph_width">glyph_width = TCE.GetFontGlyphWidth(font_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_font_glyph_height">glyph_height = TCE.GetFontGlyphHeight(font_handle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_text_width">text_width = TCE.GetTextWidth(font_handle, text)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_text_height">text_height = TCE.GetTextHeight(font_handle, text)</a></strong></div>
+		<h3>Sound</h3>
+		<div class="function-simple"><strong class="code"><a href="#load_sound_from_file">sound_handle = TCE.LoadSoundFromFile(filename)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#plat_sound">TCE.PlaySound(sound_handle, [loops])</a></strong></div>
+		<h3>Event</h3>
+		<div class="function-simple"><strong class="code"><a href="#get_mouse_position">x, y = TCE.GetMousePosition()</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_relative_mouse_position">x, y = TCE.GetRelativeMousePosition()</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_global_mouse_position">x, y = TCE.GetGlobalMousePosition()</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#is_key_down">key_down = TCE.IsKeyDown(keycode)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#is_key_up">key_up = TCE.IsKeyUp(keycode)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#key_pressed">key_pressed = TCE.KeyPressed(keycode)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#key_released">key_released = TCE.KeyReleased(keycode)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#is_button_down">button_down = TCE.IsButtonDown(button)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#is_button_up">button_up = TCE.IsButtonUp(button)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#button_pressed">button_pressed = TCE.ButtonPressed(button)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#button_released">button_released = TCE.ButtonReleased(button)</a></strong></div>
+		<h3>Primitive</h3>
+		<div class="function-simple"><strong class="code"><a href="#render_point">TCE.RenderPoint(x, y, color_string)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_line">TCE.RenderLine(x1, y1, x2, y2, color_string)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_rect_outline">TCE.RenderRectOutline(x, y, w, h, color_string)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#render_rect_filled">TCE.RenderRectFilled(x, y, w, h, color_string)</a></strong></div>
+		<h3>Window</h3>
+		<div class="function-simple"><strong class="code"><a href="#get_viewport_width">viewport_width = TCE.GetViewportWidth()</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#get_viewport_height">viewport_height = TCE.GetViewportHeight()</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#show_cursor">TCE.ShowCursor(show)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#exit">TCE.Exit()</a></strong></div>
+		<h3>Vector 2D</h3>
+		<div class="function-simple"><strong class="code"><a href="#get_vector_length">length = TCE.GetVectorLength({ x, y })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#normalize_vector">{ x, y } = TCE.NormalizeVector({ x, y })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#rotate_vector">{ x, y } = TCE.RotateVector({ x, y }, angle)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#vector_dot_product">dot = TCE.VectorDotProduct({ x, y }, { x, y })</a></strong></div>
+		<h3>Collision</h3>
+		<div class="function-simple"><strong class="code"><a href="#point_and_box_collision">collided = TCE.PointAndBoxCollision(x, y, { x, y, w, h })</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#box_and_bos_collision">collided = TCE.BoxAndBoxCollision({ x, y, w, h }, { x, y, w, h })</a></strong></div>
+		<h3>Utility</h3>
+		<div class="function-simple"><strong class="code"><a href="#make_color">color_string = TCE.MakeColor(r, g, b, a)</a></strong></div>
+		<div class="function-simple"><strong class="code"><a href="#make_rgba">r, g, b, a = TCE.MakeRGBA(color_string)</a></strong></div>
+
+		<h2 id="detailed_api_reference">Detailed API Reference</h2>
+		<h3 id="detailed_texture_api">Texture</h3>
+		<div class="function" id="load_texture_from_file">
+			<strong class="code">texture_handle = TCE.LoadTextureFromFile(filename)</strong>
+			<div class="separator"></div>
+			<p>
+				Loads a texture with the name <em class="code">filename</em> from the <span class="code">"data/textures/"</span> directory and returns a texture handle that can be used to reference the texture in other functions.<br/>
+				This function can load the following image formats: <em>JPEG</em>, <em>PNG</em>, <em>BMP</em>, <em>PSD</em>, <em>TGA</em>, <em>GIF</em>, <em>HDR</em>, <em>PIC</em>, <em>PPM</em>, and <em>PGM</em>.
+			</p>
+		</div>
+		<div class="function" id="render_texture">
+			<strong class="code">TCE.RenderTexture(texture_handle, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</strong>
+			<div class="separator"></div>
+			<p>
+				Renders the texture referenced by <em class="code">texture_handle</em> at position <em class="code">x</em>, <em class="code">y</em>; with the optional transformation values applied.<br/>
+				<em class="code">scale_x</em> and <em class="code">scale_y</em> define how much to scale the texture by.<br/>
+				<em class="code">angle</em> specifes how much to rotate the texture by (in radians).<br/>
+				<em class="code">anchor_x</em> and <em class="code">anchor_y</em> specify the point on the texture to rotate around (these values are automatically scaled if <em class="code">scale_x</em> or <em class="code">scale_y</em> are set).<br/>
+				<em class="code">flip</em> specifies how to flip the texture, it can be one of: <em class="code">TCE.RenderFlips.NONE</em>, <em class="code">TCE.RenderFlips.HORZ</em>, <em class="code">TCE.RenderFlips.VERT</em>, <em class="code">TCE.RenderFlips.BOTH</em>.
+			</p>
+		</div>
+		<div class="function" id="render_animated_texture">
+			<strong class="code">TCE.RenderAnimatedTexture(texture_handle, animation_handle, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</strong>
+			<div class="separator"></div>
+			<p>
+				Works the same as <strong class="code"><a href="#render_texture">TCE.RenderTexture()</a></strong>, however it takes an animation referenced by <em class="code">animation_handle</em> and uses it to animate the texture.
+			</p>
+		</div>
+		<div class="function" id="set_texture_color">
+			<strong class="code">TCE.SetTextureColor(texture_handle, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Sets the color of the texture referenced by <em class="code">texture_handle</em> to the color specified in <em class="code">color_string</em>. This color will remain until subsequent calls.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="get_texture_width">
+			<strong class="code">texture_width = TCE.GetTextureWidth(texture_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the width of the texture referenced by <em class="code">texture_handle</em>.
+			</p>
+		</div>
+		<div class="function" id="get_texture_height">
+			<strong class="code">texture_height = TCE.GetTextureHeight(texture_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the height of the texture referenced by <em class="code">texture_handle</em>.
+			</p>
+		</div>
+		<h3 id="detailed_animation_api">Animation</h3>
+		<div class="function" id="load_animation_from_file">
+			<strong class="code">animation_handle = TCE.LoadAnimationFromFile(filename)</strong>
+			<div class="separator"></div>
+			<p>
+				Loads an animation with the name <em class="code">filename</em> from the <span class="code">"data/animations/"</span> directory and returns an animation handle that can be used to reference the animation in other functions.<br/>
+			</p>
+		</div>
+		<div class="function" id="pause_animation">
+			<strong class="code">TCE.PauseAnimation(animation_handle, pause)</strong>
+			<div class="separator"></div>
+			<p>
+				Sets whether the animation referenced by <em class="code">animation_handle</em> should be paused or not.<br/>
+				If <em class="code">pause</em> is true then the animation will be paused, otherwise it will be unpaused.
+			</p>
+		</div>
+		<div class="function" id="animation_is_paused">
+			<strong class="code">paused = TCE.AnimationIsPaused(animation_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if the animation referenced by <em class="code">animation_handle</em> is paused and false if not.
+			</p>
+		</div>
+		<div class="function" id="reset_animation">
+			<strong class="code">TCE.ResetAnimation(animation_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Resets an animation to go back to its first frame. Allowing for non-looped animations to be played multiple times when needed.
+			</p>
+		</div>
+		<div class="function" id="get_animation_frame_width">
+			<strong class="code">frame_width = TCE.GetAnimationFrameWidth(animation_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the frame width of the animation referenced by <em class="code">animation_handle</em>.
+			</p>
+		</div>
+		<div class="function" id="get_animation_frame_height">
+			<strong class="code">frame_height = TCE.GetAnimationFrameHeight(animation_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the frame height of the animation referenced by <em class="code">animation_handle</em>.
+			</p>
+		</div>
+		<h3 id="detailed_font_api">Font</h3>
+		<div class="function" id="load_font_from_file">
+			<strong class="code">font_handle = TCE.LoadFontFromFile(filename)</strong>
+			<div class="separator"></div>
+			<p>
+				Loads a font with the name <em class="code">filename</em> from the <span class="code">"data/fonts/"</span> directory and returns a font handle that can be used to reference the font in other functions.<br/>
+			</p>
+		</div>
+		<div class="function" id="render_text">
+			<strong class="code">TCE.RenderText(font_handle, text, { x, y, [scale_x], [scale_y], [angle], [anchor_x], [anchor_y], [flip] })</strong>
+			<div class="separator"></div>
+			<p>
+				Renders the string <em class="code">text</em> using the font referenced by <em class="code">font_handle</em> starting at position <em class="code">x</em>, <em class="code">y</em>; with the optional transformation values applied.<br/>
+				<em class="code">scale_x</em> and <em class="code">scale_y</em> define how much to scale the font glyphs.<br/>
+				<em class="code">angle</em> specifes how much to rotate the each glyph by (in radians).<br/>
+				<em class="code">anchor_x</em> and <em class="code">anchor_y</em> specify the point on the glyphs to rotate around (these values are automatically scaled if <em class="code">scale_x</em> or <em class="code">scale_y</em> are set).<br/>
+				<em class="code">flip</em> specifies how to flip the glyphs, it can be one of: <em class="code">TCE.RenderFlips.NONE</em>, <em class="code">TCE.RenderFlips.HORZ</em>, <em class="code">TCE.RenderFlips.VERT</em>, <em class="code">TCE.RenderFlips.BOTH</em>.
+			</p>
+		</div>
+		<div class="function" id="set_font_color">
+			<strong class="code">TCE.SetFontColor(font_handle, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Sets the color of the font referenced by <em class="code">font_handle</em> to the color specified in <em class="code">color_string</em>. This color will remain until subsequent calls.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="get_font_glyph_width">
+			<strong class="code">glyph_width = TCE.GetFontGlyphWidth(font_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the glyph width of the font referenced by <em class="code">font_handle</em>.
+			</p>
+		</div>
+		<div class="function" id="get_font_glyph_height">
+			<strong class="code">glyph_height = TCE.GetFontGlyphHeight(font_handle)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the glyph height of the font referenced by <em class="code">font_handle</em>.
+			</p>
+		</div>
+		<div class="function" id="get_text_width">
+			<strong class="code">text_width = TCE.GetTextWidth(font_handle, text)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the resulting width that the string <em class="code">text</em> will take up when rendered using the font referenced by <em class="code">font_handle</em>.
+			</p>
+		</div>
+		<div class="function" id="get_text_height">
+			<strong class="code">text_height = TCE.GetTextHeight(font_handle, text)</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the resulting height that the string <em class="code">text</em> will take up when rendered using the font referenced by <em class="code">font_handle</em>.
+			</p>
+		</div>
+		<h3 id="detailed_sound_api">Sound</h3>
+		<div class="function" id="load_sound_from_file">
+			<strong class="code">sound_handle = TCE.LoadSoundFromFile(filename)</strong>
+			<div class="separator"></div>
+			<p>
+				Loads a sound with the name <em class="code">filename</em> from the <span class="code">"data/sounds/"</span> directory and returns a sound handle that can be used to reference the sound in other functions.<br/>
+				This function can load the following sound formats: <em>WAV</em>.
+			</p>
+		</div>
+		<div class="function" id="play_sound">
+			<strong class="code">TCE.PlaySound(sound_handle, [loops])</strong>
+			<div class="separator"></div>
+			<p>
+				Plays the sound referenced by <em class="code">sound_handle</em>.<br/>
+				If <em class="code">loops</em> is specifed, or greater than zero, then the sound will loop that many times before stopping.<br/>
+				If <em class="code">loops</em> is set to -1 then the sound will continuously play.<br/>
+				<strong>[WARNING: Currently there is no way to stop infinitely looping sounds!]</strong>
+			</p>
+		</div>
+		<h3 id="detailed_event_api">Event</h3>
+		<div class="function" id="get_mouse_position">
+			<strong class="code">x, y = TCE.GetMousePosition()</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the current mouse position within the window and stores it in <em class="code">x</em>, <em class="code">y</em>.<br/>
+				The <em class="code">x</em> value will be between <em class="code">0</em> and <strong class="code"><a href="#get_viewport_width">TCE.GetViewportWidth()</a></strong>.<br/>
+				The <em class="code">y</em> value will be between <em class="code">0</em> and <strong class="code"><a href="#get_viewport_height">TCE.GetViewportHeight()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="get_relative_mouse_position">
+			<strong class="code">x, y = TCE.GetRelativeMousePosition()</strong>
+			<div class="separator"></div>
+			<p>
+				Gets how much the mouse has moved since mouse motion was last polled and stores it in <em class="code">x</em>, <em class="code">y</em>.<br/>
+				The <em class="code">x</em> value will store how much the mouse moved horizontally.<br/>
+				The <em class="code">y</em> value will store how much the mouse moved vertically.
+			</p>
+		</div>
+		<div class="function" id="get_global_mouse_position">
+			<strong class="code">x, y = TCE.GetGlobalMousePosition()</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the current mouse position on the desktop and stores it in  <em class="code">x</em>, <em class="code">y</em>.<br/>
+				The <em class="code">x</em> value will be between <em class="code">0</em> and the current display width.<br/>
+				The <em class="code">y</em> value will be between <em class="code">0</em> and the current display height.
+			</p>
+		</div>
+		<div class="function" id="is_key_down">
+			<strong class="code">key_down = TCE.IsKeyDown(keycode)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">keycode</em> is down and false if it is up.<br/>
+				<em class="code">keycode</em> can be any of the values in <strong class="code"><a href="#keycodes">TCE.Keycodes</a></strong>.<br/>
+				If <em class="code">keycode</em> is not a valid key then the function will always return false.
+			</p>
+		</div>
+		<div class="function" id="is_key_up">
+			<strong class="code">key_up = TCE.IsKeyUp(keycode)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">keycode</em> is up and false if it is down.<br/>
+				<em class="code">keycode</em> can be any of the values in <strong class="code"><a href="#keycodes">TCE.Keycodes</a></strong>.<br/>
+				If <em class="code">keycode</em> is not a valid key then the function will always return false.
+			</p>
+		</div>
+		<div class="function" id="key_pressed">
+			<strong class="code">key_pressed = TCE.KeyPressed(keycode)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">keycode</em> has been pressed and false if not.<br/>
+				A pressed event is fired once as soon as the key is pressed and will not fire again until the key has been released and pressed again.<br/>
+				This is different from <strong class="code"><a href="#is_key_down">TCE.IsKeyDown()</a></strong> which fires every frame whilst the key is down.<br/>
+				<em class="code">keycode</em> can be any of the values in <strong class="code"><a href="#keycodes">TCE.Keycodes</a></strong>.<br/>
+				If <em class="code">keycode</em> is not a valid key then the function will always return false.
+			</p>
+		</div>
+		<div class="function" id="key_released">
+			<strong class="code">key_released = TCE.KeyReleased(keycode)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">keycode</em> has been released and false if not.<br/>
+				A released event is fired once as soon as the key is released and will not fire again until the key has been pressed and released again.<br/>
+				This is different from <strong class="code"><a href="#is_key_up">TCE.IsKeyUp()</a></strong> which fires every frame whilst the key is up.<br/>
+				<em class="code">keycode</em> can be any of the values in <strong class="code"><a href="#keycodes">TCE.Keycodes</a></strong>.<br/>
+				If <em class="code">keycode</em> is not a valid key then the function will always return false.
+			</p>
+		</div>
+		<div class="function" id="is_button_down">
+			<strong class="code">button_down = TCE.IsButtonDown(button)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">button</em> is down and false if it is up.<br/>
+				<em class="code">button</em> can be any of the values in <strong class="code"><a href="#buttons">TCE.Buttons</a></strong>.<br/>
+				If <em class="code">button</em> is not a valid button then the return value is undefined.
+			</p>
+		</div>
+		<div class="function" id="is_button_up">
+			<strong class="code">button_up = TCE.IsButtonUp(button)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">button</em> is up and false if it is down.<br/>
+				<em class="code">button</em> can be any of the values in <strong class="code"><a href="#buttons">TCE.Buttons</a></strong>.<br/>
+				If <em class="code">button</em> is not a valid button then the return value is undefined.
+			</p>
+		</div>
+		<div class="function" id="button_pressed">
+			<strong class="code">button_pressed = TCE.ButtonPressed(button)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">button</em> has been pressed and false if not.<br/>
+				A pressed event is fired once as soon as the button is pressed and will not fire again until the button has been released and pressed again.<br/>
+				This is different from <strong class="code"><a href="#is_button_down">TCE.IsButtonDown()</a></strong> which fires every frame whilst the button is down.<br/>
+				<em class="code">button</em> can be any of the values in <strong class="code"><a href="#buttons">TCE.Buttons</a></strong>.<br/>
+				If <em class="code">button</em> is not a valid buttion then the return value is undefined.
+			</p>
+		</div>
+		<div class="function" id="button_released">
+			<strong class="code">button_released = TCE.ButtonReleased(button)</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if <em class="code">button</em> has been released and false if not.<br/>
+				A released event is fired once as soon as the button is released and will not fire again until the button has been pressed and released again.<br/>
+				This is different from <strong class="code"><a href="#is_button_up">TCE.IsButtonUp()</a></strong> which fires every frame whilst the button is up.<br/>
+				<em class="code">button</em> can be any of the values in <strong class="code"><a href="#buttons">TCE.Buttons</a></strong>.<br/>
+				If <em class="code">button</em> is not a valid buttion then the return value is undefined.
+			</p>
+		</div>
+		<h3 id="detailed_primitive_api">Primitive</h3>
+		<div class="function" id="render_point">
+			<strong class="code">TCE.RenderPoint(x, y, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Renders a point at position <em class="code">x</em>, <em class="code">y</em> in the color specified by <em class="code">color_string</em>.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="render_line">
+			<strong class="code">TCE.RenderLine(x1, y1, x2, y2, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Renders a line from position <em class="code">x1</em>, <em class="code">y1</em> to <em class="code">x2</em>, <em class="code">y2</em> in the color specified by <em class="code">color_string</em>.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="render_rect_outline">
+			<strong class="code">TCE.RenderRectOutline(x, y, w, h, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Renders a rectangle outline at position <em class="code">x</em>, <em class="code">y</em> of size <em class="code">w</em>, <em class="code">h</em> in the color specified by <em class="code">color_string</em>.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<div class="function" id="render_rect_filled">
+			<strong class="code">TCE.RenderRectFilled(x, y, w, h, color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Renders a filled rectangle at position <em class="code">x</em>, <em class="code">y</em> of size <em class="code">w</em>, <em class="code">h</em> in the color specified by <em class="code">color_string</em>.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				Note that if a color string is formatted in hexadecimal then it must be prefixed with <em class="code">"0x"</em>.<br/>
+				A color string can also be made by combining separate RGBA integer values using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.
+			</p>
+		</div>
+		<h3 id="detailed_window_api">Window</h3>
+		<div class="function" id="get_viewport_width">
+			<strong class="code">viewport_width = TCE.GetViewportWidth()</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the width of the viewport (ignoring upscaling based on window size).<br/>
+				The viewport is the visible area of the window where the game is rendered.
+			</p>
+		</div>
+		<div class="function" id="get_viewport_height">
+			<strong class="code">viewport_height = TCE.GetViewportHeight()</strong>
+			<div class="separator"></div>
+			<p>
+				Gets the height of the viewport (ignoring upscaling based on window size).<br/>
+				The viewport is the visible area of the window where the game is rendered.
+			</p>
+		</div>
+		<div class="function" id="show_cursor">
+			<strong class="code">TCE.ShowCursor(show)</strong>
+			<div class="separator"></div>
+			<p>
+				Shows the cursor if <em class="code">show</em> is true and hides it if false.
+			</p>
+		</div>
+		<div class="function" id="exit">
+			<strong class="code">TCE.Exit()</strong>
+			<div class="separator"></div>
+			<p>
+				Gracefully exits the game.
+			</p>
+		</div>
+		<h3 id="detailed_vector2d_api">Vector 2D</h3>
+		<div class="function" id="get_vector_length">
+			<strong class="code">length = TCE.GetVectorLength({ x, y })</strong>
+			<div class="separator"></div>
+			<p>
+				Returns the length of the vector defined by <em class="code">x</em>, <em class="code">y</em>.
+			</p>
+		</div>
+		<div class="function" id="normalize_vector">
+			<strong class="code">{ x, y } = TCE.NormalizeVector({ x, y })</strong>
+			<div class="separator"></div>
+			<p>
+				Returns the vector defined by <em class="code">x</em>, <em class="code">y</em> normalized.
+			</p>
+		</div>
+		<div class="function" id="rotate_vector">
+			<strong class="code">{ x, y } = TCE.RotateVector({ x, y }, angle) </strong>
+			<div class="separator"></div>
+			<p>
+				Returns the vector defined by <em class="code">x</em>, <em class="code">y</em> rotated by <em class="code">angle</em> (in radians).
+			</p>
+		</div>
+		<div class="function" id="vector_dot_product">
+			<strong class="code">dot = TCE.VectorDotProduct({ x, y }, { x, y })</strong>
+			<div class="separator"></div>
+			<p>
+				Performs the dot operation on the passed in vectors and retunrs the product.
+			</p>
+		</div>
+		<h3 id="detailed_collision_api">Collision</h3>
+		<div class="function" id="point_and_box_collision">
+			<strong class="code">collided = TCE.PointAndBoxCollision(x, y, { x, y, w, h })</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if the point <em class="code">x</em>, <em class="code">y</em> is within the bounds of box <em class="code">{ x, y, w, h }</em> and false if not.
+			</p>
+		</div>
+		<div class="function" id="box_and_bos_collision">
+			<strong class="code">collided = TCE.BoxAndBoxCollision({ x, y, w, h }, { x, y, w, h })</strong>
+			<div class="separator"></div>
+			<p>
+				Returns true if the either of the <em class="code">{ x, y, w, h }</em> boxes overlap/collide and false if not.
+			</p>
+		</div>
+		<h3 id="detailed_utility_api">Utility</h3>
+		<div class="function" id="make_color">
+			<strong class="code">color_string = TCE.MakeColor(r, g, b, a)</strong>
+			<div class="separator"></div>
+			<p>
+				Takes the values provided by <em class="code">r</em>, <em class="code">g</em>, <em class="code">b</em>, <em class="code">a</em> and converts them into a color string for use with various engine functions.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				The color string can be converted back into separate RGBA components using <strong class="code"><a href="#make_rgba">TCE.MakeRGBA()</a></strong>.<br/>
+				Note that if the <em class="code">r</em>, <em class="code">g</em>, <em class="code">b</em>, <em class="code">a</em> values are not between 0-255 they will under/overflow.
+			</p>
+		</div>
+		<div class="function" id="make_rgba">
+			<strong class="code">r, g, b, a = TCE.MakeRGBA(color_string)</strong>
+			<div class="separator"></div>
+			<p>
+				Takes the color string <em class="code">color_string</em> values provided and converts them into a the separate components <em class="code">r</em>, <em class="code">g</em>, <em class="code">b</em>, <em class="code">a</em>.<br/>
+				A color string is simply a string formatted into a 32-bit number represeting an RGBA color, e.g: <em class="code">"0xFF7FAAFF"</em>.<br/>
+				The resulting <em class="code">r</em>, <em class="code">g</em>, <em class="code">b</em>, <em class="code">a</em> values will be within 0-255.<br/>
+				The separate RGBA components can be converted back into a color string using <strong class="code"><a href="#make_color">TCE.MakeColor()</a></strong>.<br/>
+			</p>
+		</div>
+		<h2 id="constants">Constants</h2>
+		<h3 id="keycodes">Keycodes</h3>
+		<div class="function">
+			<strong class="code">TCE.Keycodes.KEY_A</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_B</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_C</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_D</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_E</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_G</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_H</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_I</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_J</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_K</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_L</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_M</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_N</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_O</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_P</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_Q</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_R</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_S</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_T</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_U</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_V</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_W</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_X</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_Y</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_Z</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_1</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_2</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_3</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_4</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_5</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_6</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_7</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_8</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_9</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_0</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_RETURN</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_ESCAPE</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_BACKSPACE</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_TAB</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_SPACE</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F1</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F2</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F3</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F4</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F5</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F6</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F7</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F8</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F9</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F10</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F11</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_F12</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_RIGHT</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_LEFT</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_DOWN</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_UP</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_LCTRL</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_LSHIFT</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_RCTRL</strong><br/>
+			<strong class="code">TCE.Keycodes.KEY_RSHIFT</strong><br/>
+		</div>
+		<h3 id="buttons">Buttons</h3>
+		<div class="function">
+			<strong class="code">TCE.Buttons.BUTTON_LEFT</strong><br/>
+			<strong class="code">TCE.Buttons.BUTTON_MIDDLE</strong><br/>
+			<strong class="code">TCE.Buttons.BUTTON_RIGHT</strong><br/>
+			<strong class="code">TCE.Buttons.BUTTON_EXTRA_1</strong><br/>
+			<strong class="code">TCE.Buttons.BUTTON_EXTRA_2</strong><br/>
+		</div>
+		<h3 id="math_constants">Math Constants</h3>
+		<div class="function">
+			<strong class="code">TCE.MathConstants.M_E</strong><br/>
+			<strong class="code">TCE.MathConstants.M_LOG2E</strong><br/>
+			<strong class="code">TCE.MathConstants.M_LOG10E</strong><br/>
+			<strong class="code">TCE.MathConstants.M_LN2</strong><br/>
+			<strong class="code">TCE.MathConstants.M_LN10</strong><br/>
+			<strong class="code">TCE.MathConstants.M_PI</strong><br/>
+			<strong class="code">TCE.MathConstants.M_PI_2</strong><br/>
+			<strong class="code">TCE.MathConstants.M_PI_4</strong><br/>
+			<strong class="code">TCE.MathConstants.M_1_PI</strong><br/>
+			<strong class="code">TCE.MathConstants.M_2_PI</strong><br/>
+			<strong class="code">TCE.MathConstants.M_2_SQRTPI</strong><br/>
+			<strong class="code">TCE.MathConstants.M_SQRT2</strong><br/>
+			<strong class="code">TCE.MathConstants.M_SQRT1_2</strong><br/>
+			<strong class="code">TCE.MathConstants.M_TAU</strong><br/>
+		</div>
+		<h3 id="render_flips">Render Flips</h3>
+		<div class="function">
+			<strong class="code">TCE.RenderFlips.NONE</strong><br/>
+			<strong class="code">TCE.RenderFlips.HORZ</strong><br/>
+			<strong class="code">TCE.RenderFlips.VERT</strong><br/>
+			<strong class="code">TCE.RenderFlips.BOTH</strong><br/>
+		</div>
+		<h2 id="console_commands">Console Commands</h2>
+		<div class="function-simple"><strong class="code">reload</strong> -- Reloads the entire game state from the start.</div>
+		<div class="function-simple"><strong class="code">clear</strong> -- Clears the conssole history of all its data.</div>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+refresh_rate 60.0
+
+window_title "Chromo Engine"
+window_start_width 320
+window_start_height 200
+
+viewport_width 640
+viewport_height 400
+
+clear_color 0 0 0 255
+
+# Only mixer_tracks and mixer_volume will update in real-time because the rest would need
+# a full reset of the audio system. It is unlikely these values need to change anyway.
+mixer_frequency 22050
+mixer_channels 2
+mixer_chunksize 2048
+mixer_tracks 32
+mixer_volume 128
+
+console_mini_height 0.25
+console_large_height 0.75
+console_left_padding 2
+console_bottom_padding 0
+console_input_color 255 255 255 255
+console_history_color 155 155 155 255
+console_back_color 0 0 0 240
+console_speed 10.0
+
+enable_hotloading true
+enable_debug_console true
