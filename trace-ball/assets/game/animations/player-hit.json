@@ -1,0 +1,6 @@
+{
+  "frameSize":   { "width": 128, "height": 128 },
+  "startOffset": { "x": 128, "y": 0 },
+  "frames":      [ 0.1, 0.1, 0.1, 0.1 ],
+  "looped":        false
+}

@@ -1,0 +1,8 @@
+{
+  "assets":
+  [
+    { "type": "shader",  "name": "untextured",  "file": "assets/engine/shaders/untextured" },
+    { "type": "shader",  "name": "textured",    "file": "assets/engine/shaders/textured"   },
+    { "type": "shader",  "name": "basic",       "file": "assets/engine/effects/basic"      }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "assets":
+  [
+    { "type": "texture",     "name": "texBack",         "file": "assets/game/textures/back.png"           },
+    { "type": "texture",     "name": "texEntity",       "file": "assets/game/textures/entity.png"         },
+
+    { "type": "sound",       "name": "sndPlayerHit",    "file": "assets/game/sounds/player-hit.wav"       },
+
+    { "type": "animation",   "name": "anmPlayerIdle",   "file": "assets/game/animations/player-idle.json" },
+    { "type": "animation",   "name": "anmPlayerHit",    "file": "assets/game/animations/player-hit.json"  },
+    { "type": "animation",   "name": "anmPlayerDead",   "file": "assets/game/animations/player-dead.json" },
+    { "type": "animation",   "name": "anmEnemyIdle",    "file": "assets/game/animations/enemy-idle.json"  },
+
+    { "type": "shader",      "name": "chromatic",       "file": "assets/game/effects/chromatic"           }
+  ]
+}
