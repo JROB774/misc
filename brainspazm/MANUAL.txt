@@ -1,0 +1,32 @@
+            ____            _
+           |  _ \          (_)
+           | |_) |_ __ __ _ _ _ __  ___ _ __   __ _ _____ __ ___
+           |  _ <| '__/ _` | | '_ \/ __| '_ \ / _` |_  / '_ ` _ \
+           | |_) | | | (_| | | | | \__ \ |_) | (_| |/ /| | | | | |
+           |____/|_|  \__,_|_|_| |_|___/ .__/ \__,_/___|_| |_| |_|
+            A Brainfuck Interpreter    | |
+                                       |_|
+
+- OVERVIEW ---------------------------------------------------------------------
+
+This is an interpreter of the Brainfuck language, that makes use of only eight
+unique command characters. More information on the language can be found at its
+Wikipedia page <https://en.wikipedia.org/wiki/Brainfuck> as well as examples.
+Plain text ASCII text files containing Brainfuck code can be executed using this
+program; the results will show in a console window.
+
+- HOW TO USE -------------------------------------------------------------------
+
+Find, or create, a Brainfuck program and save it as plain-text with ASCII
+encoding (the file extension does not matter). Drag this file onto the
+interpreter executable and it will launch a console window and begin
+automatically executing the program.
+
+If you would like the program's output to be written to a file instead of to the
+console window, then use the Windows '>' operator to pipe the output to a file.
+
+- CREDITS ----------------------------------------------------------------------
+
+This program was developed by Joshua Robertson
+
+Thank you for downloading, I hope you enjoy.
