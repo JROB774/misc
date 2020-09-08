@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>Rebalanced Donation Machines</name>
+    <directory>rebalanced-donation-machines</directory>
+    <id>1618234092</id>
+    <description>Slightly changes how the donation machines work. Donation machines act exactly the same, however, when the player moves to a new floor the machines reset (unjam) and can be used again.
+
+This mod will not be to everyone's liking but if you find the process of filling the donation machine, in its current state, to be tedious then this mod may be enjoyable for you.
+
+Please report any bugs/issues that occur - thank you and enjoy.</description>
+    <version>1.1</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Tweaks"/>
+</metadata>
