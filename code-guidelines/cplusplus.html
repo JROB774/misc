@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>C++ - Coding Guidelines</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/monokai.min.css">
+
+    <link rel="stylesheet" href="./css/general.css"/>
+    <link rel="stylesheet" href="./css/cplusplus.css"/>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <img class="title" width="880px" alt="C/C++ Coding Guidelines" src="./img/cplusplus.png"/>
+        <div class="author">By Joshua Robertson</div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="container">
+        <a class="nav-button" id="homepage" href="./index.html">Home</a>
+        <a class="nav-button" id="javascript" href="./javascript.html">JavaScript</a>
+        <a class="nav-button" id="python" href="./python.html">Python</a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <div class="heading">
+          <div class="title" id="table-of-contents">Table of Contents</div>
+          <div class="id">1</div>
+        </div>
+        <a class="button-link" href="#file-system-guidelines">
+          <div class="button">
+            <div class="link">File System Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#syntax-guidelines">
+          <div class="button">
+            <div class="link">Syntax Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#naming-guidelines">
+          <div class="button">
+            <div class="link">Naming Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#layout-guidelines">
+          <div class="button">
+            <div class="link">Layout Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#documentation-guidelines">
+          <div class="button">
+            <div class="link">Documentation Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#platform-specific-guidelines">
+          <div class="button">
+            <div class="link">Platform Specific Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#programming-guidelines">
+          <div class="button">
+            <div class="link">Programming Guidelines</div>
+          </div>
+        </a>
+      </div>
+      <div class="section" id="file-system-guidelines">
+        <div class="heading">
+          <div class="title">File System Guidelines</div>
+          <div class="id">2</div>
+        </div>
+        <div class="content">
+          <div class="title">File Organisation</div>
+          <div class="text">
+            The basic file system for a project's repository should take the
+            following form (unless there is suitable reason not to, in which
+            case the structure should be discussed with all team members before
+            beginning):
+          </div>
+<pre><code class="cpp">bin/      // Project binary files and data.
+library/  // External project dependencies (optional).
+licenses/ // Licenses for project dependencies (optional).
+source/   // Project's source code.
+tools/    // Development tools for the project (optional).
+LICENSE   // Project license file.
+README.md // Project readme file.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">File Naming</div>
+          <div class="text">
+            Source code files should be formatted in lower case with
+            underscores separating words:
+          </div>
+<pre><code class="cpp">DataManager.cpp  // Incorrect.
+data_manager.cpp // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Source Code Extensions</div>
+          <div class="text">
+            C++ header files should use the .hpp extension and C header files
+            should use the .h extension to distinguish the file contents:
+          </div>
+<pre><code class="cpp">cpp_code.h   // Incorrect.
+cpp_code.hpp // Correct.
+
+c_code.h     // Correct.
+c_code.hpp   // Incorrect.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Splitting File Contents</div>
+          <div class="text">
+            If the source code of a file becomes too expansive to fit within a
+            single file then the code should be split into smaller files. The
+            file names should be the standard name followed by the subsection
+            of source code contained within the specific file:
+          </div>
+<pre><code class="cpp">animation_load.cpp
+animation_render.cpp</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Class Files</div>
+          <div class="text">
+            If classes are used then they should be placed in a unique file,
+            unless it makes sense to group multiple small classes together. The
+            file name should use the class name, but following the standard
+            file naming rules:
+          </div>
+<pre><code class="cpp">// Class FileSystem would exist within these files.
+file_system.hpp
+file_system.cpp</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">File Categorisation</div>
+          <div class="text">
+            If a project spans a large number of files, it is recommended to
+            place sources of similar categorisation into named sub-folders:
+          </div>
+<pre><code class="cpp">source/render/texture.cpp
+source/render/shader.cpp
+source/render/shape.cpp
+// ...</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">External Dependencies</div>
+          <div class="text">
+            If possible, external dependencies should be packaged with the
+            project to make redistribution and building easier for others. It
+            also prevents potential issues with later versions of those
+            dependencies. Any header and source files for the libraries should
+            go in a specific external sub-directory and if the library is
+            multi-file then the library should get its own directory:
+          </div>
+<pre><code class="cpp">source/external/     // External library code.
+source/external/SDL/ // External code for the SDL library.</code></pre>
+        </div>
+      </div>
+      <div class="section" id="syntax-guidelines">
+        <div class="heading">
+          <div class="title">Syntax Guidelines</div>
+          <div class="id">3</div>
+        </div>
+        <div class="content">
+          <div class="title">Keyword Spacing</div>
+          <div class="text">
+            A space should always be added after a keyword:
+          </div>
+<pre><code class="cpp">if(condition) { /* ... */ }  // Incorrect.
+if (condition) { /* ... */ } // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Parentheses Spacing</div>
+          <div class="text">
+            A space should always be added after the parentheses when it is
+            followed by a code block:
+          </div>
+<pre><code class="cpp">// Incorrect.
+while (condition){
+    // ...
+}
+// Correct.
+while (condition) {
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Curly Brace Placement</div>
+          <div class="text">
+            Opening braces for functions, classes, structs, enumerations, and
+            namespaces should begin on the following line:
+          </div>
+<pre><code class="cpp">// Incorrect.
+void MyFunction () {
+    // ...
+}
+// Correct.
+void MyFunction ()
+{
+    // ...
+}</code></pre>
+          <div class="text">
+            All other uses of opening braces (if statements, loops, etc.)
+            should begin on the same line as the expression itself:
+          </div>
+<pre><code class="cpp">// Incorrect.
+if (condition)
+{
+    // ...
+}
+// Correct.
+if (condition) {
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Else and Else If Placement</div>
+          <div class="text">
+            Else and else if statements should start on the same line as the
+            last closing brace of the previous condition:
+          </div>
+<pre><code class="cpp">// Incorrect.
+if (condition) {
+    // ...
+}
+else {
+    // ...
+}
+// Correct.
+if (condition) {
+    // ...
+} else {
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line If Statement</div>
+          <div class="text">
+            If an if statement is short enough then it can be placed on a
+            single line. This is not required and can be decided upon by the
+            programmer on a case-by-case basis when writing short if
+            statements:
+          </div>
+<pre><code class="cpp">// Both correct.
+if (condition) { /* ... */ }
+if (condition) {
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line Struct</div>
+          <div class="text">
+            If a struct is short enough then it can be placed on a a single
+            line. This is not required and can be decided upon by the
+            programmer on a case-by-case basis when writing short structs:
+          </div>
+<pre><code class="cpp">// Both correct.
+struct Vec2 { float x, y; };
+struct Vec2
+{
+    float x, y;
+};</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Namespaces</div>
+          <div class="text">
+            The content inside of a namespace should not be indented and a
+            comment should be added to the end brace for identification:
+          </div>
+<pre><code class="cpp">namespace MyNamespace
+{
+
+// ...
+
+} // MyNamespace</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Switch Statements</div>
+          <div class="text">
+            Switch cases should be wrapped in curly braces and the break
+            statement should be placed on the outside of the braces:
+          </div>
+<pre><code class="cpp">// Incorrect.
+switch (value) {
+    case (condition):
+        // ...
+        break;
+}
+
+// Correct.
+switch (value) {
+    case (condition): {
+        // ...
+    } break;
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">For Loop Statements</div>
+          <div class="text">
+            The statements in a for loop should not have any space padding
+            between the components of the expression:
+          </div>
+<pre><code class="cpp">// Incorrect.
+for (int i = 0; i &lt; 10; ++i) {
+    // ...
+}
+// Correct.
+for (int i=0; i&lt;10; ++i) {
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Templates</div>
+          <div class="text">
+            Template declarations should use the typename keyword over class.
+          </div>
+<pre><code class="code">// Incorrect.
+template&lt;class T&gt;
+void MyFunction ();
+
+// Correct.
+template&lt;typename T&gt;
+void MyFunction ();</code></pre>
+          <div class="text">
+            Each template declaration for functions, classes, and structs,
+            should go on a separate line:
+          </div>
+<pre><code class="code">// Incorrect.
+template&lt;typename T&gt; void MyFunction ()
+{
+    // ...
+}
+// Correct.
+template&lt;typename T&gt;
+void MyFunction ()
+{
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Bracket Expression Padding</div>
+          <div class="text">
+            Expressions within parentheses should not be padded with spaces:
+          </div>
+<pre><code class="cpp">int x = ( y * 2 ) + 10; // Incorrect.
+int x = (y * 2) + 10;   // Correct.</code></pre>
+          <div class="text">
+            Expressions within curly braces should be padded with spaces:
+          </div>
+<pre><code class="cpp">// Incorrect.
+int array[4] = {10, 20, 30, 40};
+if (condition) {/* ... */}
+
+// Correct.
+int array[4] = { 10, 20, 30, 40 };
+if (condition) { /* ... */ }</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Comma Space Separation</div>
+          <div class="text">
+            Comma-separated lists should be separated using spaces, unless it
+            makes logical sense to group certain values together, or there are
+            a large number of values and grouping them would not cause
+            any readability issues to the code:
+          </div>
+<pre><code class="cpp">int array[3] = { 1,2,3 };   // Incorrect.
+int array[3] = { 1, 2, 3 }; // Correct.
+
+// Exception: It makes sense to group the triangle's vertices.
+RenderTriangle(x1,y1, x2,y2, x3,y3);</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Indentation</div>
+          <div class="text">
+            Use spaces over tabs that are four spaces wide:
+          </div>
+<pre><code class="cpp">// Incorrect.
+void MyFunction ()
+{
+  // ...
+}
+// Correct.
+void MyFunction ()
+{
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Class Access Specifiers</div>
+          <div class="text">
+            If classes are used then the access specifiers should not be
+            indented:
+          </div>
+<pre><code class="cpp">class MyClass
+{
+public:
+    // ...
+protected:
+    // ...
+private:
+    // ...
+};</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Return Statement</div>
+          <div class="text">
+            If a function's return statement contains some form of condition or
+            logic then it should be encased in parentheses:
+          </div>
+<pre><code class="cpp">// Incorrect.
+return a &lt; b;
+return a * 10 + 20;
+
+// Correct.
+return (a &lt; b);
+return ((a * 10) + 20);</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Floating-Point Precision</div>
+          <div class="text">
+            Use the correct precision specifier when working with
+            floating-point literals:
+          </div>
+<pre><code class="cpp">// Incorrect.
+float a = 0.5;
+double b = 0.5;
+long double c = 0.5;
+
+// Correct.
+float a = 0.5f;
+double b = 0.5;
+long double c = 0.5L;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Floating-Point Decimals</div>
+          <div class="text">
+            Always place a value before and after the decimal in a
+            floating-point value:
+          </div>
+<pre><code class="cpp">// Incorrect.
+float a = .5f;
+float b = 1.f;
+
+// Correct.
+float a = 0.5f;
+float b = 1.0f;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Code Alignment</div>
+          <div class="text">
+            If there are multiple values grouped together in a list-like format
+            then the programmer can align the various elements if they feel it
+            makes the code more readable and clear:
+          </div>
+<pre><code class="cpp">// Both of these are valid.
+int a = 10;
+int b = 0;
+float first = 40.0f;
+float second = 40.0f;
+
+int   a      =    10;
+int   b      =     0;
+float first  = 40.0f;
+float second = 40.0f;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Pointers and References</div>
+          <div class="text">
+            Pointer and reference symbols should be grouped with the type, not
+            the name of a variable:
+          </div>
+<pre><code class="cpp">// Incorrect.
+int *my_pointer;
+int &my_reference;
+// Correct.
+int* my_pointer;
+int& my_reference;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Hexadecimal Literals</div>
+          <div class="text">
+            Hexadecimal literals should always be padded with the correct number
+            of zeroes for the size of the number:
+          </div>
+<pre><code class="cpp">u32 number = 0xFFFF;     // Incorrect.
+u32 number = 0x0000FFFF; // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Line Length</div>
+          <div class="text">
+            Lines of code should not exceed 100 characters maximum, but 80
+            characters is preferred if it is possible to reach that limit. If
+            a long code line would become less readable when split into
+            multiple lines then it is also acceptable to break the 100
+            character rule.
+          </div>
+        </div>
+      </div>
+      <div class="section" id="naming-guidelines">
+        <div class="heading">
+          <div class="title">Naming Guidelines</div>
+          <div class="id">4</div>
+        </div>
+        <div class="content">
+          <div class="title">Variables</div>
+          <div class="text">
+            Variables should be all lowercase, with underscores separating words:
+          </div>
+<pre><code class="cpp">int myVariable;  // Incorrect.
+int my_variable; // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Constants and Constant Expressions</div>
+          <div class="text">
+            Constants and constant expressions should be all uppercase, with
+            underscores separating words:
+          </div>
+<pre><code class="cpp">const int my_constant; // Incorrect.
+const int myConstant;  // Incorrect.
+const int MY_CONSTANT; // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Functions, Namespaces, Classes, Structs, and Enumerations</div>
+          <div class="text">
+            Functions, namespaces, classes, structs, and enumerations, should
+            use camel-casing, with the first letter being uppercase:
+          </div>
+<pre><code class="cpp">// Incorrect.
+void      my_function () { /* ... */ }
+namespace my_namespace   { /* ... */ }
+class     my_class       { /* ... */ };
+struct    my_struct      { /* ... */ };
+enum      my_enum        { /* ... */ };
+
+// Correct.
+void      MyFunction ()  { /* ... */ }
+namespace MyNamespace    { /* ... */ }
+class     MyClass        { /* ... */ };
+struct    MyStruct       { /* ... */ };
+enum      MyEnum         { /* ... */ };</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Enumerated Values</div>
+          <div class="text">
+            Enumerated values should be all uppercase, with underscores
+            separating words:
+          </div>
+<pre><code class="cpp">enum MyEnum
+{
+    FIRST_VALUE,
+    SECOND_VALUE,
+    // ...
+};</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Preprocessor Defines</div>
+          <div class="text">
+            Preprocessor defines should be all uppercase, with underscores
+            separating words:
+          </div>
+<pre><code class="cpp">#define MATH_PI 3.14
+#define ADD(__x, __y) (__x) + (__y)</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Arguments</div>
+          <div class="text">
+            Function arguments should follow standard variable naming
+            conventions and have a single leading underscore:
+          </div>
+<pre><code class="cpp">// Incorrect.
+void MyFunction (int a, int b)
+{
+    // ...
+}
+// Correct.
+void MyFunction (int _a, int _b)
+{
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Preprocessor Macro Arguments</div>
+          <div class="text">
+            Preprocessor macro arguments should follow standard variable naming
+            conventions and have two leading underscores:
+          </div>
+<pre><code class="cpp">#define MY_MACRO(x, y) (x) + (y)         // Incorrect.
+#define MY_MACRO(__x, __y) (__x) + (__y) // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Dictionary Spelling</div>
+          <div class="text">
+            All user-defined names and comments should use Simplified English
+            over Traditional English, as this is the standard in most code:
+          </div>
+<pre><code class="cpp">struct Colour { /* ... */ }; // Incorrect.
+struct Color { /* ... */ };  // Correct.</code></pre>
+        </div>
+      </div>
+      <div class="section" id="layout-guidelines">
+        <div class="heading">
+          <div class="title">Layout Guidelines</div>
+          <div class="id">5</div>
+        </div>
+        <div class="content">
+          <div class="title">Header File Layout</div>
+          <div class="text">
+            The basic layout/template for a header file is:
+          </div>
+<pre><code class="cpp">/*******************************************************************************
+ * [DESCRIPTION OF FILE]
+ * [LICENSE NAME] [LICENSE LINK]
+ * [NAME OF AUTHOR]
+ *
+*******************************************************************************/
+
+#ifndef __FILE_NAME_HPP__ /*//////////////////////////////////////////////////*/
+#define __FILE_NAME_HPP__
+
+// ...
+
+#endif /* __FILE_NAME_HPP__ //////////////////////////////////////////////////*/
+
+/*******************************************************************************
+ * [COPY OF PROJECT LICENSE]
+ *
+*******************************************************************************/</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Source File Layout</div>
+          <div class="text">
+            The basic layout/template for a source file is:
+          </div>
+<pre><code class="cpp">/*******************************************************************************
+ * [DESCRIPTION OF FILE]
+ * [LICENSE NAME] [LICENSE LINK]
+ * [NAME OF AUTHOR]
+ *
+*******************************************************************************/
+
+/*////////////////////////////////////////////////////////////////////////////*/
+
+// ...
+
+/*////////////////////////////////////////////////////////////////////////////*/
+
+/*******************************************************************************
+ * [COPY OF PROJECT LICENSE]
+ *
+*******************************************************************************/</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Class Layout</div>
+          <div class="text">
+            If classes are used then the content of the class should be ordered
+            like so:
+          </div>
+<pre><code class="cpp">class MyClass
+{
+    // Friend Classes
+    // Static Members
+    // Static Methods
+    // Public Members
+    // Public Methods
+    // Protected Members
+    // Protected Methods
+    // Private Members
+    // Private Methods
+};</code></pre>
+        </div>
+      </div>
+      <div class="section" id="documentation-guidelines">
+        <div class="heading">
+          <div class="title">Documentation Guidelines</div>
+          <div class="id">6</div>
+        </div>
+        <div class="content">
+          <div class="title">File Header</div>
+          <div class="text">
+            Each file should have an appropriate header in the following
+            format:
+          </div>
+<pre><code class="cpp">/*******************************************************************************
+ * [DESCRIPTION OF FILE]
+ * [LICENSE NAME] [LICENSE LINK]
+ * Authored By [NAME OF AUTHOR]
+ *
+*******************************************************************************/</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line Comments</div>
+          <div class="text">
+            Single line comments should have a space after the comment marker:
+          </div>
+<pre><code class="cpp">//This is incorrect.
+// This is correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Multi-Line Comments</div>
+          <div class="text">
+            Multi-line comments should be padded with spaces:
+          </div>
+<pre><code class="cpp">/*This is incorrect.*/
+/* This is correct. */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Basic Function Documentation</div>
+          <div class="text">
+            Function documentation should be formatted using the general layout
+            displayed in the example below. Note that the parameter names used
+            in the documentation should match those in the actual function
+            definition, however, they should have the leading underscore
+            removed. Furthermore, make sure that names for parameters are
+            aligned with each other and that the doc comment goes directly
+            above the function being documented:
+          </div>
+<pre><code class="cpp">/**
+ * Generates a random integer value within the specified range.
+ *
+ * Parameters:
+ *   min - Minimum value to generate (inclusive).
+ *   max - Maximum value to generate (inclusive).
+ *
+ * Returns:
+ *   A random value within the given range.
+ */
+int RandomGenerator (int _min, int _max)
+{
+    // Some random calculation...
+    return random_value;
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Parameters and Return Types</div>
+          <div class="text">
+            When defining parameters and returns in a function's documentation,
+            type information can be excluded as this is self-documenting within
+            the actual function definition/declaration itself.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">Optional Function Parameters</div>
+          <div class="text">
+            Information about optional parameters and default values can be
+            ignored in a function's documentation, as this is self-documenting
+            within the actual function definition/declaration itself.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">Tagging</div>
+          <div class="text">
+            Different tag markers should be used to indicate the code state:
+          </div>
+<pre><code class="cpp">// @INCOMPLETE - Code that is currently incomplete but will be finished.
+// @TEMPORARY  - Code that should and will be removed for final release.
+// @CLEANUP    - Code that needs to be reorganised, styled, or cleaned.
+// @LEAK       - Code that currently leaks memory and should be fixed.
+// @OPTIMISE   - Code that works but could be optimised for size/speed.
+// @ERROR      - Code that needs to have error handling/logging added.</code></pre>
+          <div class="text">
+            An example on how one of these could be used in actual code:
+          </div>
+<pre><code class="cpp">void ComputeSomething (int _a, int _b)
+{
+  // @INCOMPLETE: Need to add the computation!
+}</code></pre>
+        </div>
+      </div>
+      <div class="section" id="platform-specific-guidelines">
+        <div class="heading">
+          <div class="title">Platform Specific Guidelines</div>
+          <div class="id">7</div>
+        </div>
+        <div class="content">
+          <div class="title">File Inclusion</div>
+          <div class="text">
+            Amongst the source code sub-directories, platform specific code
+            should go into its own directory for easy location:
+          </div>
+<pre><code class="cpp">source/platform/</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">File Inclusion</div>
+          <div class="text">
+            Within the platform specific folder, there should be a platform
+            header and source file, these are the only two files that should
+            be included into the main code base. They manage which files get
+            included based on the current platform:
+          </div>
+<pre><code class="cpp">source/platform/platform.hpp
+source/platform/platform.cpp</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Platform Defines</div>
+          <div class="text">
+            Custom defines should be used in the project's build process to
+            determine which platform specific code should be included:
+          </div>
+<pre><code class="cpp">// Where PROJECT is a project-specific prefix.
+PROJECT_PLATFORM_WIN32
+PROJECT_PLATFORM_MACOS
+PROJECT_PLATFORM_LINUX
+// ...</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Platform Header Layout</div>
+          <div class="text">
+            The platform header file handles the inclusion of the different
+            platform specific headers using preprocessor defines. It will
+            include the correct header based on which platform is defined:
+          </div>
+<pre><code class="cpp">#if   defined(PROJECT_PLATFORM_WIN32)
+#include "win32.hpp"
+#elif defined(PROJECT_PLATFORM_MACOS)
+#error "MacOS is not supported!"
+#elif defined(PROJECT_PLATFORM_LINUX)
+#error "Linux is not supported!"
+#endif</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Platform Source Layout</div>
+          <div class="text">
+            The platform source file handles the inclusion of the different
+            platform specific sources using preprocessor defines. It will
+            include the correct source based on which platform is defined:
+          </div>
+<pre><code class="cpp">#if   defined(PROJECT_PLATFORM_WIN32)
+#include "win32.cpp"
+#elif defined(PROJECT_PLATFORM_MACOS)
+#error "MacOS is not supported!"
+#elif defined(PROJECT_PLATFORM_LINUX)
+#error "Linux is not supported!"
+#endif</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Platform Files</div>
+          <div class="text">
+            Each supported platform should have its own file which contains
+            a platform specific implementation of a generic library, that can
+            be used by the rest of the code. This means that inputs (arguments)
+            and outputs (returns) from the platform layer interface should be
+            generic and only the internals of the functions should be handled
+            by the platform specific code, for example:
+          </div>
+<pre><code class="cpp">// Inside "win32.cpp".
+char* LoadFileData (const char* _filename)
+{
+    // Windows specific file loading...
+    return data;
+}
+// Inside "linux.cpp".
+char* LoadFileData (const char* _filename)
+{
+    // Linux specific file loading...
+    return data;
+}
+
+// Elsewhere in non-platform code (this works no matter which platform).
+char* file_data = LoadFileData("my_file.txt");</code></pre>
+          <div class="text  ">
+            This means that when porting code, only the platform interface has to be
+            modified rather than changing code everywhere.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">Splitting Platform Files</div>
+          <div class="text">
+            If a project is very heavy on platform-specific code, then each
+            platform can have its own sub-directory within the platform
+            directory. With a variety of different files for better code
+            organisation:
+          </div>
+<pre><code class="cpp">source/platform/win32_gui.cpp
+source/platform/win32_file.cpp
+// ...
+
+source/platform/mac_gui.cpp
+source/platform/mac_file.cpp
+// ...</code></pre>
+        </div>
+      </div>
+      <div class="section" id="programming-guidelines">
+        <div class="heading">
+          <div class="title">Programming Guidelines</div>
+          <div class="id">8</div>
+        </div>
+        <div class="content">
+          <div class="title">Unity Build</div>
+          <div class="text">
+            If possible for a given project, a unity build is preferred over a
+            standard C++ type build. A unity build is when all files are
+            included into the main source file and then only that is compiled.
+            This prevents having multiple compilation units that have to be
+            linked together, potentially speeding up compile time as the linker
+            is usually the slowest portion.<br/>
+            <br/>
+            If a unity build is used, then all functions should be made static,
+            to hint to the compiler that nothing requires external linkage.
+            Functions should be defined this way using two custom defines, for
+            quickly marking a function as static, or static inline:
+          </div>
+<pre><code class="cpp">#define STDDEF static
+#define INLDEF static inline
+
+STDDEF void MyFunction ()
+{
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Using Namespaces</div>
+          <div class="text">
+            Namespaces should not be used in global scope, if necessary, it
+            should be defined on a per-function basis:
+          </div>
+<pre><code class="cpp">// Incorrect.
+using namespace std;
+
+// Correct.
+void MyFunction ()
+{
+    using namespace std;
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Shortened Integer Typedefs</div>
+          <div class="text">
+            Shortened typedefs of fixed-width integer types should be used:
+          </div>
+<pre><code class=cpp>// Incorrect.
+uint8_t* byte_array;
+uint32_t bit_flags;
+// Correct.
+u8* byte_array;
+u32 bit_flags;</code></pre>
+          <div class="text">
+            These shortened integer typedefs should be defined like so:
+          </div>
+<pre><code class="cpp">#include &lt;stdint.h&gt;
+
+typedef uint8_t   u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+typedef int8_t    s8;
+typedef int16_t  s16;
+typedef int32_t  s32;
+typedef int64_t  s64;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Descriptive Static Keywords</div>
+          <div class="text">
+            The context-sensitive static keyword should be defined with a number
+            of more descriptive keywords so that the use case for the particular
+            static is clear just by reading the keyword:
+          </div>
+<pre><code class="cpp">// Incorrect.
+static int x;
+static void MyFunction ()
+{
+    static int y;
+    // ...
+}
+// Correct.
+GLOBAL int x;
+INTERNAL void MyFunction ()
+{
+    PERSISTENT int y;
+    // ...
+}</code></pre>
+          <div class="text">
+            The descriptive static keywords should be defined like so:
+          </div>
+<pre><code class="cpp">#define GLOBAL     static
+#define PERSISTENT static
+#define INTERNAL   static
+#define SHARED     static // For class members.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Macro Argument Wrapping</div>
+          <div class="text">
+            Macros arguments should be wrapped in parentheses; this is
+            important to ensure that if a macro argument is expanded it does
+            not interfere with the code of the macro itself:
+          </div>
+<pre><code class="cpp">#define ADD(__a, __b) __a + __b     // Incorrect.
+#define ADD(__a, __b) (__a) + (__b) // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Overloading</div>
+          <div class="text">
+            Overloading functions should mainly be avoided in favour of
+            providing descriptive names for different functions with similar
+            arguments, but this can be decided upon on a case-by-case basis:
+          </div>
+<pre><code class="cpp">// Less descriptive.
+bool Collision (Point _point, Rect _rect);
+bool Collision (Line _line, Rect _rect);
+// More descriptive.
+bool CollisionPointRect (Point _point, Rect _rect);
+bool CollisionLineRect (Line _line, Rect _rect);</code></pre>
+          <div class="text">
+            One true exception to this guideline is for creating const-qualified
+            class methods:
+          </div>
+<pre><code class="cpp">void ClassMethod ();
+void ClassMethod () const;</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Global Pollution</div>
+          <div class="text">
+            Namespaces should be used to avoid polluting the global namespace,
+            which can lead to naming conflicts. For items that cannot be
+            namespaced (preprocessors) a prefix should be appended to attempt
+            to prevent any potential conflicts that could occur.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">Private Namespace Content</div>
+          <div class="text">
+            Internal content to a namespace should be defined inside of the
+            source file, in an internal namespace called 'Internal':
+          </div>
+<pre><code class="cpp">namespace MyNamespace
+{
+
+namespace Internal
+{
+
+// ...
+
+} // Internal
+
+// ...
+
+} // MyNamespace</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Getters and Setters</div>
+          <div class="text">
+            If classes are being used, getters and setters should be completely
+            avoided for members that are accessible and modifiable. It results
+            in extra code and more confusing statements; for example, to
+            increment a value:
+          </div>
+<pre><code class="cpp">my_object.SetValue(my_object.GetValue()++); // Incorrect.
+my_object.value++;                          // Correct.</code></pre>
+          <div class="text">
+            Getters and setters are acceptable if some form of extra processing
+            is meant to occur before the value can be retrieved or set:
+          </div>
+<pre><code class="cpp">int MyClass::SetValue (int _value)
+{
+    // Do some checking and manipulation of the value...
+    // Set the actual value afterwards...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Language Features</div>
+          <div class="text">
+            Certain language features should be avoided and if they are to be
+            used other team members should be consulted:
+          </div>
+<pre><code class="cpp">// Inheritance (Multiple Inheritance)
+// Virtual Functions
+// Exception Handling
+// C++ Standard Template Library</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Memory Allocation</div>
+          <div class="text">
+            C-style memory allocation is preferred over C++ RAII memory
+            allocation:
+          </div>
+<pre><code class="cpp">int* data = new int[10];              // Incorrect.
+int* data = malloc(10 * sizeof(int)); // Correct.</code></pre>
+          <div class="text">
+            If initialisation is needed then C++ allocation can be used but
+            it should be set to not throw exceptions:
+          </div>
+<pre><code class="cpp">int* data = new(std::nothrow) int[10];</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div class="items">
+          <div class="row">
+            Copyright &copy; 2018 Joshua Robertson
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad()</script>
+  </body>
+</html>

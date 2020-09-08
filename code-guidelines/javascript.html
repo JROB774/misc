@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>JavaScript - Coding Guidelines</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/monokai.min.css">
+
+    <link rel="stylesheet" href="./css/general.css"/>
+    <link rel="stylesheet" href="./css/javascript.css"/>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <img class="title" width="880px" alt="JavaScript Coding Guidelines" src="./img/javascript.png"/>
+        <div class="author">By Joshua Robertson</div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="container">
+        <a class="nav-button" id="homepage" href="./index.html">Home</a>
+        <a class="nav-button" id="cplusplus" href="./cplusplus.html">C/C++</a>
+        <a class="nav-button" id="python" href="./python.html">Python</a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <div class="heading">
+          <div class="title" id="table-of-contents">Table of Contents</div>
+          <div class="id">1</div>
+        </div>
+        <a class="button-link" href="#file-system-guidelines">
+          <div class="button">
+            <div class="link">File System Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#syntax-guidelines">
+          <div class="button">
+            <div class="link">Syntax Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#naming-guidelines">
+          <div class="button">
+            <div class="link">Naming Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#layout-guidelines">
+          <div class="button">
+            <div class="link">Layout Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#documentation-guidelines">
+          <div class="button">
+            <div class="link">Documentation Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#programming-guidelines">
+          <div class="button">
+            <div class="link">Programming Guidelines</div>
+          </div>
+        </a>
+      </div>
+      <div class="section" id="file-system-guidelines">
+        <div class="heading">
+          <div class="title">File System Guidelines</div>
+          <div class="id">2</div>
+        </div>
+        <div class="content">
+          <div class="title">File Organisation</div>
+          <div class="text">
+            The best method for a project's file system organisation is
+            dependent on the type of project being carried out. The guidelines
+            for this aspect should be defined on a case-by-case basis, with all
+            team members, before beginning.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">File Naming</div>
+          <div class="text">
+            Source files must be formatted in lowercase with hyphens separating
+            words:
+          </div>
+<pre><code class="javascript">asset_loader.js // Incorrect.
+AssetLoader.js  // Incorrect.
+asset-loader.js // Correct.
+</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Class Files</div>
+          <div class="text">
+            If classes are used then they should be placed in a unique file,
+            unless it makes sense to group multiple small classes together. The
+            file name should use the class name, but following the standard
+            file naming rules:
+          </div>
+<pre><code class="javascript">input-device.js // Class InputDevice would exist within this file.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">File Categorisation</div>
+          <div class="text">
+            If a project spans a large number of scripts, it is recommended to
+            place scripts of similar categorisation into named sub-folders:
+          </div>
+<pre><code class="javascript">source/draw/texture.js
+source/draw/shader.js
+source/draw/shape.js
+// ...</code></pre>
+        </div>
+      </div>
+      <div class="section" id="syntax-guidelines">
+        <div class="heading">
+          <div class="title">Syntax Guidelines</div>
+          <div class="id">3</div>
+        </div>
+        <div class="content">
+          <div class="title">Semicolons</div>
+          <div class="text">
+            Semicolons should not be used at the end of code lines:
+          </div>
+<pre><code class="javascript">var x = 200 * 10; // Incorrect.
+var x = 200 * 10  // Correct.</code></pre>
+          <div class="text">
+            Exceptions to the semicolon rule can be found in for loops and
+            when both a case statement and break are on the same line:
+          </div>
+<pre><code class="javascript">for (var i = 0; i &lt; 10; i++) {
+  // ...
+}
+
+switch (myVar) {
+  case 10: var x = myVar + 10; break
+    // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">String Literals</div>
+          <div class="text">
+            String literals should be enclosed in single quotes, not double
+            quotes:
+          </div>
+<pre><code class="javascript">var myStr = "This is my string." // Incorrect.
+var myStr = 'This is my string.' // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Keyword Spacing</div>
+          <div class="text">
+            A space should always be added after a keyword:
+          </div>
+<pre><code class="javascript">if(condition) { /* ... */ }  // Incorrect.
+if (condition) { /* ... */ } // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Parentheses Spacing</div>
+          <div class="text">
+            A space should always be added after the parentheses when it is
+            followed by a code block:
+          </div>
+<pre><code class="javascript">// Incorrect.
+while (condition){
+  // ...
+}
+// Correct.
+while (condition) {
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Curly Brace Placement</div>
+          <div class="text">
+            Opening braces for functions, classes, enumerations, and namespaces
+            should begin on the following line:
+          </div>
+<pre><code class="javascript">// Incorrect.
+function myFunction () {
+  // ...
+}
+// Correct.
+function myFunction ()
+{
+  // ...
+}</code></pre>
+          <div class="text">
+            All other uses of opening braces (if statements, loops, etc.)
+            should begin on the same line as the expression itself:
+          </div>
+<pre><code class="javascript">// Incorrect.
+if (condition)
+{
+  // ...
+}
+// Correct.
+if (condition) {
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Else and Else If Placement</div>
+          <div class="text">
+            Else and else if statements should start on the same line as the
+            last closing brace of the previous condition:
+          </div>
+<pre><code class="javascript">// Incorrect.
+if (condition) {
+  // ...
+}
+else {
+  // ...
+}
+// Correct.
+if (condition) {
+  // ...
+} else {
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line If Statement</div>
+          <div class="text">
+            If an if statement is short enough then it can be placed on a
+            single line. This is not required and can be decided upon by the
+            programmer on a case-by-case basis when writing short if
+            statements:
+          </div>
+<pre><code class="javascript">// Both correct.
+if (condition) { /* ... */ }
+if (condition) {
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Bracket Expression Padding</div>
+          <div class="text">
+            Expressions within parentheses should not be padded with spaces:
+          </div>
+<pre><code class="javascript">var x = ( y * 2 ) + 10 // Incorrect.
+var x = (y * 2) + 10   // Correct.</code></pre>
+          <div class="text">
+            Expressions within curly and square braces should be padded with
+            spaces:
+          </div>
+<pre><code class="javascript">// Incorrect.
+var object = {x: 0, y: 0, z: 0}
+var array = [10, 20, 30, 40]
+if (condition) {/* ... */}
+
+// Correct.
+var object = { x: 0, y: 0, z: 0 }
+var array = [ 10, 20, 30, 40 ]
+if (condition) { /* ... */ }</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Comma Space Separation</div>
+          <div class="text">
+            Comma-separated lists should be separated using spaces, unless it
+            makes logical sense to group certain values together, or there are
+            a large number of values and grouping them would not cause any
+            readability issues to the code:
+          </div>
+<pre><code class="javascript">var array = [ 1,2,3 ]   // Incorrect.
+var array = [ 1, 2, 3 ] // Correct.
+
+// Exception: It makes sense to group the triangle's vertices.
+DrawTriangle(x1,y1, x2,y2, x3,y3)</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Indentation</div>
+          <div class="text">
+            Use spaces over tabs that are two spaces wide:
+          </div>
+<pre><code class="javascript">// Incorrect.
+function myFunction ()
+{
+    // ...
+}
+// Correct.
+function myFunction ()
+{
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Return Statement</div>
+          <div class="text">
+            If a function's return statement contains some form of condition or
+            logic then it should be encased in parentheses:
+          </div>
+<pre><code class="javascript">// Incorrect.
+return a &lt; b
+return a * 10 + 20
+
+// Correct.
+return (a &lt; b)
+return ((a * 10) + 20)</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Code Alignment</div>
+          <div class="text">
+            If there are multiple values grouped together in a list format then
+            the programmer can align the various elements if they feel it makes
+            the code more readable and clear:
+          </div>
+<pre><code class="javascript">// Both of these are valid.
+var a = 10
+var b = 0
+var first = 40
+var second = 40
+
+var a      = 10
+var b      =  0
+var first  = 40
+var second = 40</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Line Length</div>
+          <div class="text">
+            Lines of code should not exceed 100 characters maximum, but 80
+            characters is preferred if it is possible to reach that limit. If
+            a long code line would become less readable when split into
+            multiple lines then it is also acceptable to break the 100
+            character rule.
+          </div>
+        </div>
+      </div>
+      <div class="section" id="naming-guidelines">
+        <div class="heading">
+          <div class="title">Naming Guidelines</div>
+          <div class="id">4</div>
+        </div>
+        <div class="content">
+          <div class="title">Variables</div>
+          <div class="text">
+            Variables should use camel casing, with the first letter being
+            lowercase:
+          </div>
+<pre><code class="javascript">var my_variable // Incorrect.
+var myVariable  // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Constants</div>
+          <div class="text">
+            Constants should be all uppercase, with underscores separating
+            words:
+          </div>
+<pre><code class="javascript">const my_constant // Incorrect.
+const myConstant  // Incorrect.
+const MY_CONSTANT // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Functions</div>
+          <div class="text">
+            Functions should use camel casing, with the first letter being
+            lowercase:
+          </div>
+<pre><code class="javascript">// Incorrect.
+function my_function ()
+{
+  // ...
+}
+// Correct.
+function myFunction ()
+{
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Classes, Enumerations, and Namespaces</div>
+          <div class="text">
+            Classes, enumerations, and namespaces should use camel case,
+            the first letter being uppercase:
+          </div>
+<pre><code class="javascript">// Incorrect.
+class myClass {}
+var my_namespace = {}
+
+// Correct.
+class MyClass {}
+var MyNamespace = {}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Enumerated Values</div>
+          <div class="text">
+            Enumerated values should be all uppercase, with underscores
+            separating words:
+          </div>
+<pre><code class="javascript">const MyEnum =
+{
+  FIRST_VALUE:  10,
+  SECOND_VALUE: 20,
+  // ...
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Private Namespace Content</div>
+          <div class="text">
+            The private content of a namespace should be contained within an
+            underscore object. This is done so that other team members can
+            differentiate the interface of a namespace from the internal
+            content that shouldn't be touched:
+          </div>
+<pre><code class="javascript">var MyNamespace =
+{
+  // All private content goes in here.
+  _:
+  {
+    firstPrivate: 20,
+    secondPrivate: function ()
+    {
+      // ...
+    }
+  }
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Private Class Members</div>
+          <div class="text">
+            Private class members should be contained within an underscore
+            object member. This is done so that other team members can
+            differentiate the freely accessible variables of a class from the
+            internal members that shouldn't be touched:
+          </div>
+<pre><code class="javascript">class MyClass
+{
+  constructor ()
+  {
+    // All private members go in here.
+    this._ =
+    {
+      firstPrivate:  10,
+      secondPrivate: 20
+    }
+  }
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Private Class Methods</div>
+          <div class="text">
+            Private class methods should have an underscore in front of the
+            name. This is done so that other team members can differentiate the
+            public interface of a class from the internal methods that
+            shouldn't be touched:
+          </div>
+<pre><code class="javascript">class MyClass
+{
+  _privateFunction ()
+  {
+    // ...
+  }
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Dictionary Spelling</div>
+          <div class="text">
+            All user-defined names and comments should use Simplified English
+            over Traditional English, as this is the standard in most code:
+          </div>
+<pre><code class="javascript">class Colour { /* ... */ } // Incorrect.
+class Color { /* ... */ }  // Correct.</code></pre>
+        </div>
+      </div>
+      <div class="section" id="layout-guidelines">
+        <div class="heading">
+          <div class="title">Layout Guidelines</div>
+          <div class="id">5</div>
+        </div>
+        <div class="content">
+          <div class="title">Namespace Layout</div>
+          <div class="text">
+            A namespace should have its content in the following layout:
+          </div>
+<pre><code class="javascript">var MyNamespace =
+{
+  // Public Variables
+  // Public Functions
+
+  _:
+  {
+    // Private Variables
+    // Private Methods
+  }
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Class Layout</div>
+          <div class="text">
+            A class should have its content in the following layout:
+          </div>
+<pre><code class="javascript">class MyClass
+{
+  // Static Methods
+  // Constructor
+  // Public Methods
+  // Private Methods
+}</code></pre>
+        </div>
+      </div>
+      <div class="section" id="documentation-guidelines">
+        <div class="heading">
+          <div class="title">Documentation Guidelines</div>
+          <div class="id">6</div>
+        </div>
+        <div class="content">
+          <div class="title">File Header</div>
+          <div class="text">
+            Each file should have an appropriate header in the following
+            format:
+          </div>
+<pre><code class="javascript">/*******************************************************************************
+ * @file [DESCRIPTION OF FILE]
+ * @license {@link [LICENSE LINK] [LICENSE NAME]}
+ * @author [NAME OF AUTHOR]
+ *
+ ******************************************************************************/</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line Comments</div>
+          <div class="text">
+            Single line comments should have a space after the comment marker:
+          </div>
+<pre><code class="javascript">//This is incorrect.
+// This is correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Multi-Line Comments</div>
+          <div class="text">
+            Multi-line comments should be padded with spaces:
+          </div>
+<pre><code class="javascript">/*This is incorrect.*/
+/* This is correct. */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Basic Function Documentation</div>
+          <div class="text">
+            Function documentation should follow the rules and layout suggested
+            by the <a href="http://usejsdoc.org/" target="_blank">JSDocs</a>
+            system/guidelines. Make sure that types and names for parameters
+            and returns are aligned with each other. An example of what a
+            function comment should look like:
+          </div>
+<pre><code class="javascript">/**
+ * This function performs a calculation based on the passed parameters and then
+ * returns the result from the calculation afterwards.
+ *
+ * @param  {Number} first  - First value to use in the calculation.
+ * @param  {Number} second - Second value to use in the calculation.
+ *
+ * @return {Number} The result of the performed calculation.
+ */
+function calculate (a, b)
+{
+  // ...
+  return myValue
+}</code></pre>
+          <div class="text">
+            If the function only has one argument and a return type then the
+            line break between the params and return should be ignored:
+          </div>
+<pre><code class="javascript">/**
+ * ...
+ *
+ * @param  {Number} value - ...
+ * @return {Number} ...
+ */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Parameters and Return Types</div>
+          <div class="text">
+            The types available to be used in the parameter and return
+            documentation are:
+          </div>
+<pre><code class="javascript">/**
+ * @param {Undefined} ...
+ * @param {Null}      ...
+ * @param {Boolean}   ...
+ * @param {Number}    ...
+ * @param {String}    ...
+ * @param {Symbol}    ...
+ * @param {Object}    ...
+ * @param {Array}     ...
+ */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Optional Function Parameters</div>
+          <div class="text">
+            Optional parameters and default optional parameters are formatted
+            like so:
+          </div>
+<pre><code class="javascript">/**
+ * ...
+ *
+ * @param {Number} [value]    - Description of an optional parameter.
+ * @param {Number} [value=20] - Description of a default optional parameter.
+ */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Private Functions</div>
+          <div class="text">
+            If a function is private then the following tag should be added to
+            the end of the function's block comment:
+          </div>
+<pre><code class="javascript">/**
+ * ...
+ *
+ * @access private
+ */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Static Functions</div>
+          <div class="text">
+            If a function is static then the following tag should be added to
+            the end of the function's block comment:
+          </div>
+<pre><code class="javascript">/**
+ * ...
+ *
+ * @static
+ */</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Tagging</div>
+          <div class="text">
+            Different tag markers should be used to indicate the code state:
+          </div>
+<pre><code class="javascript">// @INCOMPLETE - Code that is currently incomplete but will be finished.
+// @TEMPORARY  - Code that should and will be removed for final release.
+// @CLEANUP    - Code that needs to be reorganised, styled, or cleaned.
+// @OPTIMISE   - Code that works but could be optimised for size/speed.
+// @ERROR      - Code that needs to have error handling/logging added.</code></pre>
+          <div class="text">
+            An example on how one of these could be used in actual code:
+          </div>
+<pre><code class="javascript">function computeSomething (a, b)
+{
+  // @INCOMPLETE: Need to add the computation!
+}</code></pre>
+        </div>
+      </div>
+      <div class="section" id="programming-guidelines">
+        <div class="heading">
+          <div class="title">Programming Guidelines</div>
+          <div class="id">7</div>
+        </div>
+        <div class="content">
+          <div class="title">Comparison Operator</div>
+          <div class="text">
+            Always use the strict comparison operator over the type conversion
+            operator (unless their is a suitable reason to use the latter):
+          </div>
+<pre><code>if (a == b) { /* ... */ }  // Incorrect.
+if (a === b) { /* ... */ } // Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Promises Over Callbacks</div>
+          <div class="text">
+            Always prefer the <a href="//developer.mozilla.org/Web/JavaScript/Guide/Using_promises" target="_blank">Promise API</a>
+            over using standard JavaScript callbacks, when organising
+            asynchronous code. This is preferred because it avoids long callback
+            chains, often referred to as 'The Pyramid of Doom':
+          </div>
+<pre><code cass="javascript">// Incorrect.
+myAsyncFileLoad(url, function (fileData)
+{
+    // Do something...
+})
+
+// Correct.
+myAsyncFileLoad(url).then(function (fileData)
+{
+    // Do something...
+})</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Global Pollution</div>
+          <div class="text">
+            Namespaces should be used to avoid polluting the global namespace,
+            which can lead to naming conflicts. For items that cannot be
+            namespaced a prefix should be appended to attempt to prevent any
+            potential conflicts that could occur.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div class="items">
+          <div class="row">
+            Copyright &copy; 2018 Joshua Robertson
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad()</script>
+  </body>
+</html>

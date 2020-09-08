@@ -1,0 +1,69 @@
+@charset 'utf-8';
+
+.navigation
+{
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.navigation .container
+{
+  display: flex;
+  flex-direction: row;
+}
+
+.navigation a.nav-button
+{
+  font-family: 'Open Sans Extrabold', sans-serif;
+  font-size: 24px;
+
+  display: flex;
+
+  flex-basis: 0;
+  flex-grow: 1;
+
+  margin-right: 10px;
+
+  min-height: 50px;
+  height: auto;
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  text-decoration: none;
+  color: var(--main-color);
+
+  background-size: 100% 200%;
+
+  -webkit-transition: background-position 0.1s, flex-grow 0.2s;
+  -moz-transition: background-position 0.1s, flex-grow 0.2s;
+   transition: background-position 0.1s, flex-grow 0.2s;
+}
+.navigation a.nav-button:last-child
+{
+  margin-right: 0px;
+}
+.navigation a.nav-button:hover,
+.navigation a.nav-button:focus
+{
+  background-position: 0% -100%;
+  flex-grow: 2;
+}
+
+.navigation a.nav-button#homepage
+{
+  background-image: linear-gradient(to bottom, var(--sub1-color) 50%, #DAE6F2 50%);
+}
+.navigation a.nav-button#cplusplus
+{
+  background-image: linear-gradient(to bottom, var(--sub1-color) 50%, #F34B7D 50%);
+}
+.navigation a.nav-button#javascript
+{
+  background-image: linear-gradient(to bottom, var(--sub1-color) 50%, #F1E05A 50%);
+}
+.navigation a.nav-button#python
+{
+  background-image: linear-gradient(to bottom, var(--sub1-color) 50%, #438ECC 50%);
+}

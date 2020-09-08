@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Python - Coding Guidelines</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/styles/monokai.min.css">
+
+    <link rel="stylesheet" href="./css/general.css"/>
+    <link rel="stylesheet" href="./css/python.css"/>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <img class="title" width="880px" alt="Python Coding Guidelines" src="./img/python.png"/>
+        <div class="author">By Joshua Robertson</div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="container">
+        <a class="nav-button" id="homepage" href="./index.html">Home</a>
+        <a class="nav-button" id="cplusplus" href="./cplusplus.html">C/C++</a>
+        <a class="nav-button" id="javascript" href="./javascript.html">JavaScript</a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <div class="heading">
+          <div class="title" id="table-of-contents">Table of Contents</div>
+          <div class="id">1</div>
+        </div>
+        <a class="button-link" href="#file-system-guidelines">
+          <div class="button">
+            <div class="link">File System Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#syntax-guidelines">
+          <div class="button">
+            <div class="link">Syntax Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#naming-guidelines">
+          <div class="button">
+            <div class="link">Naming Guidelines</div>
+          </div>
+        </a>
+        <a class="button-link" href="#documentation-guidelines">
+          <div class="button">
+            <div class="link">Documentation Guidelines</div>
+          </div>
+        </a>
+      </div>
+      <div class="section" id="file-system-guidelines">
+        <div class="heading">
+          <div class="title">File System Guidelines</div>
+          <div class="id">2</div>
+        </div>
+        <div class="content">
+          <div class="title">File Organisation</div>
+          <div class="text">
+            The best method for a project's file system organisation is
+            dependent on the type of project being carried out. The guidelines
+            for this aspect should be defined on a case-by-case basis, with all
+            team members, before beginning.
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">File Naming</div>
+          <div class="text">
+            Source files must be formatted in lowercase with underscores
+            separating words:
+          </div>
+<pre><code class="python">asset-loader.py # Incorrect.
+AssetLoader.py  # Incorrect.
+asset_loader.py # Correct.
+</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">File Categorisation</div>
+          <div class="text">
+            If a project spans a large number of scripts, it is recommended to
+            place scripts of similar categorisation into named sub-folders:
+          </div>
+<pre><code class="python">source/draw/texture.py
+source/draw/shader.py
+source/draw/shape.py
+# ...</code></pre>
+        </div>
+      </div>
+      <div class="section" id="syntax-guidelines">
+        <div class="heading">
+          <div class="title">Syntax Guidelines</div>
+          <div class="id">3</div>
+        </div>
+        <div class="content">
+          <div class="title">Semicolons</div>
+          <div class="text">
+            Semicolons should not be used at the end of code lines:
+          </div>
+<pre><code class="python">x = 200 * 10; # Incorrect.
+x = 200 * 10  # Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Compound Statements</div>
+          <div class="text">
+            Using compound statements (multiple statements on the same line)
+            should always be avoided:
+          </div>
+<pre><code class="python"># Incorrect.
+x = 20; y = 30
+# Correct.
+x = 20
+y = 30</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">String Literals</div>
+          <div class="text">
+            String literals should be enclosed in single quotes, not double
+            quotes:
+          </div>
+<pre><code class="python">my_str = "This is my string." # Incorrect.
+my_str = 'This is my string.' # Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line If Statement</div>
+          <div class="text">
+            An if statement, even an extremely short one, should not be placed
+            on a single line ever:
+          </div>
+<pre><code class="pytohn">#Incorrect.
+if condition: # ...
+# Correct.
+if condition:
+  # ...</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Bracket Expression Padding</div>
+          <div class="text">
+            Expressions within parentheses should not be padded with spaces:
+          </div>
+<pre><code class="python">x = ( y * 2 ) + 10 # Incorrect.
+x = (y * 2) + 10   # Correct.</code></pre>
+          <div class="text">
+            Expressions within curly and square braces should be padded with
+            spaces:
+          </div>
+<pre><code class="python"># Incorrect.
+my_dict  = {'x': 0, 'y': 0}
+my_array = [10, 20, 30, 40]
+
+# Correct
+my_dict  = { 'x': 0, 'y': 0 }
+my_array = [ 10, 20, 30, 40 ]</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Parentheses</div>
+          <div class="text">
+            A function's parentheses should be separated from the function name
+            by a space:
+          </div>
+<pre><code class="python"># Incorrect.
+def my_function():
+  # ...
+#Correct.
+def my_function ():
+  # ...</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Comma Space Separation</div>
+          <div class="text">
+            Comma-separated lists should be separated using spaces, unless it
+            makes logical sense to group certain values together, or there are
+            a large number of values and grouping them would not cause any
+            readability issues to the code:
+          </div>
+<pre><code class="python">my_array = [ 1,2,3 ]   # Incorrect.
+my_array = [ 1, 2, 3 ] # Correct.
+
+# Exception: It makes sense to group the triangle's vertices.
+draw_triangle(x1,y1, x2,y2, x3,y3)</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Dictionary and Array Braces</div>
+          <div class="text">
+            Dictionary and array braces (unless declared on a single line)
+            should be placed on a new-line from the equals operator, with a
+            backwards slash to denote the statement continuing on to the
+            following line:
+          </div>
+<pre><code class="python"># Incorrect.
+vec2 = {
+  x: 10,
+  y: 20
+}
+# Correct.
+vec2 = \
+{
+  x: 10,
+  y: 20
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Dictionary Key/Values</div>
+          <div class="text">
+            The colon operator to separate key/value pairs in a dictionary
+            should not have a space before it, but should have a space after:
+          </div>
+<pre><code class="python">my_dict = { 'x' : 0, 'y' : 0 } # Incorrect.
+my_dict = { 'x': 0, 'y': 0 }   # Correct.</code></pre>
+          <div class="text">
+            An exception to this rule, can be seen when aligning dictionary
+            key/value pairs together. In which case certain pairs will have
+            spacing applied to the left side of the colon separator:
+          </div>
+<pre><code class="python"># Exception: Acceptable to allow for alignment.
+my_dict = \
+{
+  first : 10,
+  second: 20,
+  third : 30
+}</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Indentation</div>
+          <div class="text">
+            Use spaces over tabs that are two spaces wide:
+          </div>
+<pre><code class="python"># Incorrect.
+def my_function ():
+    # ...
+# Correct.
+def my_function ():
+  # ...</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Return Statement</div>
+          <div class="text">
+            If a function's return statement contains some form of condition or
+            logic then it should be encased in parentheses:
+          </div>
+<pre><code class="python"># Incorrect.
+return a &lt; b
+return a * 10 + 20
+
+# Correct.
+return (a &lt; b)
+return ((a * 10) + 20)</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Code Alignment</div>
+          <div class="text">
+            If there are multiple values grouped together in a list format then
+            the programmer can align the various elements if they feel it makes
+            the code more readable and clear:
+          </div>
+<pre><code class="python"># Both of these are valid.
+a = 10
+b = 0
+first = 40
+second = 40
+
+a      = 10
+b      =  0
+first  = 40
+second = 40</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Line Length</div>
+          <div class="text">
+            Lines of code should not exceed 100 characters maximum, but 80
+            characters is preferred if it is possible to reach that limit. If
+            a long code line would become less readable when split into
+            multiple lines then it is also acceptable to break the 100
+            character rule.
+          </div>
+        </div>
+      </div>
+      <div class="section" id="naming-guidelines">
+        <div class="heading">
+          <div class="title">Naming Guidelines</div>
+          <div class="id">4</div>
+        </div>
+        <div class="content">
+          <div class="title">Variables</div>
+          <div class="text">
+            Variables should be all lowercase, with underscores separating
+            words:
+          </div>
+<pre><code class="python">myVariable = 10  # Incorrect.
+my_variable = 10 # Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Constants</div>
+          <div class="text">
+            Constants should be all uppercase, with underscores separating
+            words:
+          </div>
+<pre><code class="python">my_constant = 3.14 # Incorrect.
+myConstant = 3.14  # Incorrect.
+MY_CONSTANT = 3.14 # Correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Functions</div>
+          <div class="text">
+            Functions should be all lowercase, with underscores separating
+            words:
+          </div>
+<pre><code class="python"># Incorrect.
+def myFunction ():
+  # ...
+# Correct.
+def my_function ():
+  # ...</code></pre>
+        </div>
+      </div>
+      <div class="section" id="documentation-guidelines">
+        <div class="heading">
+          <div class="title">Documentation Guidelines</div>
+          <div class="id">5</div>
+        </div>
+        <div class="content">
+          <div class="title">File Header</div>
+          <div class="text">
+            Each file should have an appropriate header in the following
+            format:
+          </div>
+<pre><code class="python"># ******************************************************************************
+# [DESCRIPTION OF FILE]
+# [LICENSE] <[LICENSE LINK]>
+# Authored by [AUTHOR]
+#
+# ******************************************************************************</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Single Line Comments</div>
+          <div class="text">
+            Single line comments should have a space after the comment marker:
+          </div>
+<pre><code class="python">#This is incorrect.
+# This is correct.</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Multi-Line Comments</div>
+          <div class="text">
+            Multi-line comments should be padded with spaces:
+          </div>
+<pre><code class="python">'''This is incorrect.'''
+''' This is correct. '''</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Basic Function Documentation</div>
+          <div class="text">
+            Function documentation should be formatted as Python docstrings,
+            using the general layout displayed in the example below. Make sure
+            that types and names for parameters are aligned with each other,
+            and that there is a blank line after the docstring:
+          </div>
+<pre><code class="python">def print_name (first, second):
+  ''' Prints a person's first and last name, as a greeting.
+
+  Parameters
+  ----------
+  str : first  - First name of the person.
+  str : second - Second name of the person.
+
+  Returns
+  -------
+  str - Full name of the person. '''
+
+  name = first + ' ' + second
+  print('Hello,', name)
+  return name</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Function Parameters and Return Types</div>
+          <div class="text">
+            The types available to be used in the parameter and return
+            documentation are:
+          </div>
+<pre><code class="python">'''
+object
+function
+bool
+int
+float
+complex
+list
+tuple
+range
+str
+bytes
+bytearray
+memoryview
+set
+frozenset
+dict
+'''</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Optional Function Parameters</div>
+          <div class="text">
+            Optional parameters and default optional parameters are formatted
+            like so:
+          </div>
+<pre><code class="python">''' Some function description...
+
+Parameters
+----------
+int : [value]    - Description of an optional parameter.
+int : [value=20] - Description of a default optional parameter. '''</code></pre>
+        </div>
+        <div class="content">
+          <div class="title">Tagging</div>
+          <div class="text">
+            Different tag markers should be used to indicate the code state:
+          </div>
+<pre><code class="python"># @INCOMPLETE - Code that is currently incomplete but will be finished.
+# @TEMPORARY  - Code that should and will be removed for final release.
+# @CLEANUP    - Code that needs to be reorganised, styled, or cleaned.
+# @OPTIMISE   - Code that works but could be optimised for size/speed.
+# @ERROR      - Code that needs to have error handling/logging added.</code></pre>
+          <div class="text">
+            An example on how one of these could be used in actual code:
+          </div>
+<pre><code class="python">def compute_something (a, b):
+  # @INCOMPLETE: Need to add the computation!</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div class="items">
+          <div class="row">
+            Copyright &copy; 2018 Joshua Robertson
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad()</script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+@charset 'utf-8';
+
+:root
+{
+  --main-color: #272822;
+  --sub1-color: #F34B7D;
+  --sub2-color: #EFAAC1;
+  --sub3-color: #EA7EA2;
+  --sub4-color: #E8D7DD;
+  --link-color: #FFE5EE;
+}

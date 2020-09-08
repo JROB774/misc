@@ -1,0 +1,149 @@
+@charset 'utf-8';
+
+:root
+{
+  --main-color: #272822;
+  --sub1-color: #DAE6F2;
+}
+
+html, body
+{
+  height: 100%;
+}
+
+.header
+{
+  margin-bottom: 40px;
+}
+
+.section a.language-link
+{
+  color: var(--main-color);
+  text-decoration: none;
+}
+
+.section a.language-link .language
+{
+  font-family: 'Open Sans Extrabold', sans-serif;
+  font-size: 24px;
+
+  display: flex;
+
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  width: 100%;
+  height: 50px;
+
+  align-items: center;
+
+  -webkit-transition: height 0.2s;
+  -moz-transition: height 0.2s;
+   transition: height 0.2s;
+}
+.section a.language-link:hover .language,
+.section a.language-link:focus .language
+{
+  height: 60px;
+}
+
+.section a.language-link .language .title
+{
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  background-size: 200% 100%;
+
+  -webkit-transition: background-position 0.3s, height 0.2s, font-size 0.2s;
+  -moz-transition: background-position 0.3s, height 0.2s, font-size 0.2s;
+   transition: background-position 0.3s, height 0.2s, font-size 0.2s;
+}
+.section a.language-link:hover .language .title,
+.section a.language-link:focus .language .title
+{
+  font-size: 28px;
+  background-position: -100% 0%;
+}
+
+.section a.language-link .language#cplusplus  .title
+{
+  background-image: linear-gradient(to right, var(--sub1-color) 50%, #F34B7D 50%);
+}
+.section a.language-link .language#javascript .title
+{
+  background-image: linear-gradient(to right, var(--sub1-color) 50%, #F1E05A 50%);
+}
+.section a.language-link .language#python     .title
+{
+  background-image: linear-gradient(to right, var(--sub1-color) 50%, #438ECC 50%);
+}
+
+.section a.language-link .language .title .link
+{
+  padding-left: 15px;
+  padding-right: 15px;
+
+  width: 100%;
+}
+
+.section a.language-link .language .stub
+{
+  margin-right: 10px;
+
+  width: 60px;
+  height: 100%;
+
+  -webkit-transition: width 0.2s;
+  -moz-transition: width 0.2s;
+   transition: width 0.2s;
+}
+.section a.language-link:hover .language .stub,
+.section a.language-link:focus .language .stub
+{
+  width: 70px;
+}
+
+.section a.language-link .language#cplusplus  .stub
+{
+  background: #F34B7D;
+}
+.section a.language-link .language#javascript .stub
+{
+  background: #F1E05A;
+}
+.section a.language-link .language#python     .stub
+{
+  background: #438ECC;
+}
+
+.section a.language-link .language .stub,
+.section a.language-link .language .title
+{
+  -webkit-box-shadow: 0px 8px 0px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 8px 0px 0px rgba(0, 0, 0, 0.5);
+   box-shadow: 0px 8px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.homepage
+{
+  position: relative;
+  min-height: 100%;
+}
+
+.body .container
+{
+  /* Height of the footer + its top margin! */
+  padding-bottom: 120px;
+}
+
+.footer
+{
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 80px;
+}
