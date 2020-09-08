@@ -1,16 +1,20 @@
 --[[
 Collision script contains a multitude of functions used to calculate
 whether objects of different types have collided. Currently, these types
-inclue: points, and quads.
+include: points, and quads.
 
 Functions return true if collision occurred, false if not.
 --]]
 
--- the global collision namespace
+-- the global collision namespace is created
 Collision = {}
 Collision.__index = Collision
 
--- detects collision beterrn a point and point
+--[[
+This function takes in two points and determines if they are equal to one
+another, if so then a collision has occurred.
+--]]
+
 function Collision.pointAndPoint (_point1, _point2)
 	return (
 		(_point1.x == _point2.x) and
@@ -18,7 +22,12 @@ function Collision.pointAndPoint (_point1, _point2)
 	)
 end
 
--- detects collision between a point and quad
+--[[
+This function takes in a point and quad and checks to see if the point
+exists anywhere within the boundaries of the quad, if so then a collision
+has occurred.
+--]]
+
 function Collision.pointAndQuad (_point, _quad)
 	return (
 		(_point.x >= _quad.x) and
@@ -28,7 +37,12 @@ function Collision.pointAndQuad (_point, _quad)
 	)
 end
 
--- detects collision between a quad and quad
+--[[
+This function takes in two quads and checks to see if any portion of one
+quad is overlapping with a portion of the other quad, if so a collision
+has occurred.
+--]]
+
 function Collision.quadAndQuad (_quad1, _quad2)
 	return (
 		(_quad1.x < (_quad2.x + _quad2.w)) and

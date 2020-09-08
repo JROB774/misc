@@ -1,13 +1,13 @@
 --[[
 Constant script contains many global constants for the application.
-This may be a temporary script, with constants moved to specific files
-eventually, but for now they are all stored here as a way to avoid the
-frequent use of magic numbers throughout the code (more readable).
+They are all stored here as a way to avoid the frequent use of magic
+numbers throughout the code (more readable).
 --]]
 
+-- includes functionality from other scripts
 require("source.utility")
 
--- the global constant namespace
+-- the global constant namespace is created
 Constant = {}
 Constant.__index = Constant
 
@@ -45,10 +45,6 @@ Constant.MUSIC_TOTAL = 3
 Constant.NPC_FAMILIAR_HEALTH = 2
 Constant.NPC_FAMILIAR_BOUNDS = 32
 Constant.NPC_FAMILIAR_MOVE_SPEED = 1.5
-Constant.NPC_SPIRIT_HEALTH = 1
-Constant.NPC_SPIRIT_BOUNDS = 8
-Constant.NPC_BRUTE_HEALTH = 5
-Constant.NPC_BRUTE_BOUNDS = 20
 Constant.NPC_DISTANCE_SHADOW = 500
 Constant.SPAWNER_TOTAL = 3
 Constant.SPAWNER_POS_X = {}
@@ -68,5 +64,5 @@ Constant.SCORE_HIT = 5
 Constant.SCORE_KILL = 10
 Constant.AIM_EASING = 3.0
 
--- makes the constant table immutable
+-- makes the constant table immutable (so it cannot be changed)
 Constant = Utility.immutable(Constant)

@@ -4,7 +4,7 @@ This data can be used and modified by multiple scripts to allow
 for raycasting-based rendering.
 --]]
 
--- the global raycast namespace
+-- the global raycast namespace is created
 Raycast = {}
 Raycast.__index = Raycast
 
