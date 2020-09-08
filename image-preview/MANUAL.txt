@@ -1,0 +1,43 @@
+     _____                            _____                _
+    |_   _|                          |  __ \              (_)
+      | |  _ __ ___   __ _  __ _  ___| |__) | __ _____   ___  _____      __
+      | | | '_ ` _ \ / _` |/ _` |/ _ \  ___/ '__/ _ \ \ / / |/ _ \ \ /\ / /
+     _| |_| | | | | | (_| | (_| |  __/ |   | | |  __/\ V /| |  __/\ V  V /
+    |_____|_| |_| |_|\__,_|\__, |\___|_|   |_|  \___| \_/ |_|\___| \_/\_/
+                            __/ |
+                           |___/
+
+- OVERVIEW ---------------------------------------------------------------------
+
+This is a software utility that can be used by artists, allowing for work to be
+previewed at full-size giving a full preview. It was originally designed to be
+used with the Paint.NET drawing application, when developing pixel art, as there
+is no way to preview an image at normal size--meaning frequent zooms in and out
+were neccessary. However, it can be used with any software desired, simply open
+the image to be previewed and it will automatically update as changes are made
+in the drawing app.
+
+For more information view the Help->About section on the application hotbar.
+
+- HOW TO USE -------------------------------------------------------------------
+
+Toolbar buttons (and hotkeys) from left-to-right:
+
+- Open/load an image. (CTRL+O)
+- Scale down the image. (CTRL+MINUS)
+- Scale up the image. (CTRL+ADD)
+- Reset the scale to default. (CTRL+0)
+- Fit the window to the image. (CTRL+F)
+
+To use the application simply load up an image and it will appear within the
+preview window. Now load up the image in a painting app of your choice and begin
+to modify it, whenever the image is saved it will automatically update within
+the preview window.
+
+For more information view the Help->Tutorial section on the application hotbar.
+
+- CREDITS ----------------------------------------------------------------------
+
+This program was developed by Joshua Robertson.
+
+Thank you for downloading, I hope you enjoy.

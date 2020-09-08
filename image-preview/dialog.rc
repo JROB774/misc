@@ -1,0 +1,67 @@
+#ifndef __DIALOG_RC__ /*//////////////////////////////////////////////////////*/
+#define __DIALOG_RC__
+
+#include <windows.h>
+#include "resource.h"
+
+IDD_TUTORIAL DIALOGEX DISCARDABLE 20, 20, 160, 172
+STYLE DS_MODALFRAME|WS_POPUP|WS_CAPTION|WS_SYSMENU
+CAPTION "Tutorial"
+FONT 8, "MS Sans Serif"
+BEGIN
+	GROUPBOX "Opening an Image", IDC_STATIC, 5, 5, 150, 50
+	LTEXT "To open an image file, either navigate to File->Open... or use "
+	"the hotkey CTRL+O. The image will automatically update whenever "
+	"changes are saved.", IDC_STATIC, 15, 15, 135, 35
+	GROUPBOX "Changing Image Scale", IDC_STATIC, 5, 60, 150, 55
+	LTEXT "The image's viewing scale can be changed using the CTRL+ADD and "
+	"CTRL+MINUS shortcuts, as well as through the toolbar buttons. To reset "
+	"the scale to 100% use CTRL+0.", IDC_STATIC, 15, 70, 135, 40
+	GROUPBOX "Adjusting the Window", IDC_STATIC, 5, 120, 150, 47
+	LTEXT "If the window currently does not fit the image perfectly, then "
+	"the CTRL+F shortcut (or appropriate toolbar button) can be used to fit "
+	"the window correctly.", IDC_STATIC, 15, 130, 135, 32
+END
+
+IDD_ABOUT DIALOGEX DISCARDABLE 20, 20, 220, 95
+STYLE DS_MODALFRAME|WS_POPUP|WS_CAPTION|WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+	LTEXT "This utility is used to preivew the entirety (or portion) of an "
+	"image, whilst developing it; so that the changes made whilst zoomed in "
+	"can be seen as a whole.\n\n"
+	"I hope you find it potentially useful and enjoy.\n\n"
+	"Current Version: 1.0.0\n"
+	"Developed By: Joshua Robertson\n", IDC_STATIC, 10, 10, 200, 75
+END
+
+#endif /* __DIALOG_RC__ //////////////////////////////////////////////////////*/
+
+/******************************************************************************\
+ * This is free and unencumbered software released into the public domain.
+ *
+ * Anyone is free to copy, modify, publish, use, compile, sell, or
+ * distribute this software, either in source code form or as a compiled
+ * binary, for any purpose, commercial or non-commercial, and by any
+ * means.
+ *
+ * In jurisdictions that recognize copyright laws, the author or authors
+ * of this software dedicate any and all copyright interest in the
+ * software to the public domain. We make this dedication for the benefit
+ * of the public at large and to the detriment of our heirs and
+ * successors. We intend this dedication to be an overt act of
+ * relinquishment in perpetuity of all present and future rights to this
+ * software under copyright law.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * For more information, please refer to <http://unlicense.org/>
+ *
+\******************************************************************************/
