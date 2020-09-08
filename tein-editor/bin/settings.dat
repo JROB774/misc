@@ -1,0 +1,46 @@
+// MISC. AND GENERAL SETTINGS, OPTIONS, AND VALUES:
+
+tein_game_path = C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\
+allow_settings_modifications = true
+backup_lvl_quantity = 3
+use_external_font = 
+external_font_path = 
+use_old_tile_graphics = false
+use_system_cursor = false
+use_unique_tool_cursors = true
+show_cursor_using_tools = true
+use_tooltips = true
+
+// COLOR VALUES FOR DIFFERENT VISUAL ELEMENTS:
+
+tilepanel_selected_tile_color = 255,255,255,255
+tilepanel_unselected_tile_color = 224,224,224,255
+tilepanel_color = 0,0,0,255
+tilepanel_text_color = 255,255,255,255
+hotbar_color = 0,0,0,255
+hotbar_buttons_color = 255,255,255,255
+background_color = 128,128,128,255
+camerabounds_valid_color = 255,240,0,79
+camerabounds_invalid_color = 204,40,40,79
+selectbox_color = 242,0,255,127
+cursor_tile_color = 0,240,0,127
+leveleditor_background_color = 224,224,224,255
+leveleditor_grid_color = 0,0,0,255
+symmetry_lines_color = 255,0,0,255
+tooltip_color = 0,0,0,224
+tooltip_title_color = 255,255,255,255
+tooltip_text_color = 224,224,224,255
+
+// ALPHA VALUES FOR DIFFERENT VISUAL ELEMENTS:
+
+layer_active_basic_alpha = 255
+layer_active_tag_alpha = 143
+layer_active_overlay_alpha = 143
+layer_active_back1_alpha = 255
+layer_active_back2_alpha = 255
+layer_inactive_basic_alpha = 199
+layer_inactive_tag_alpha = 95
+layer_inactive_overlay_alpha = 95
+layer_inactive_back1_alpha = 143
+layer_inactive_back2_alpha = 159
+tilepanel_inactive_tile_alpha = 95

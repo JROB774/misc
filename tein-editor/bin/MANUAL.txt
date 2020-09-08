@@ -1,0 +1,208 @@
+  _________ _______ _________ _        _______  ______  __________________
+  \__   __/(  ____ \\__   __/( (    /|(  ____ \(  __  \ \__   __/\__   __/
+     ) (   | (    \/   ) (   |  \  ( || (    \/| (  \  )   ) (      ) (   
+     | |   | (__       | |   |   \ | || (__    | |   ) |   | |      | |   
+     | |   |  __)      | |   | (\ \) ||  __)   | |   | |   | |      | |   
+     | |   | (         | |   | | \   || (      | |   ) |   | |      | |   
+     | |   | (____/\___) (___| )  \  || (____/\| (__/  )___) (___   | |   
+     )_(   (_______/\_______/|/    )_)(_______/(______/ \_______/   )_(   
+  
+                Unofficial 'The End is Nigh' Level Editor
+                v0.1.5
+
+- OVERVIEW ---------------------------------------------------------------------
+
+This is a program used to edit levels for the game 'The End is Nigh'. You will
+need a copy of the game to obtain the assets and files neccessary to modify the
+game. This software hopes to provide a more streamlined and useful editor than
+the existing one, with brand new features, visuals, and tools to make editing
+levels easier. For more information on how to use the software and more, read
+the following sections below.
+
+- HOW TO USE -------------------------------------------------------------------
+
+Simply run the application and begin using the tools provided to modify and
+create new levels for the game. Info on particular features and tools are as
+follows:
+
+- SETTINGS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Currently there is no way to modify the settings within the editor itself. If
+you would like to modify a setting please do so manually using the settings.dat
+file. The names are human-readable and can be modified easily using a program
+such as Notepad.
+
+Note, most settings will not take effect until the editor is restarted.
+
+- THE TILE PANEL - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The tile panel is the large panel on the left-side of the editor. It contains
+all the tiles that can be placed in the game. They are split into three sections,
+categories, groups, and indiviudal tiles.
+
+Categories are the different sections, marked with title text over the top of
+each one, grouping tiles of similar types.
+
+Groups are the individual graphics visible in each category, they group together
+variants of the same tiles, usually directional variants (up, right, down, left,
+etc.).
+
+Tiles are the different variants that make up each group, the currently selected
+tile in a group is represented as the graphic of the group.
+
+For information on how to scroll through and select tiles within groups, go to
+the HOTKEYS AND CONTROLS section. These tile groups can also be selected simply
+by clicking on them.
+
+- THE HOTBAR BUTTONS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+At the top of the editor is a hotbar, filled with different tools and features
+for level modification, in left-to-right order they do the following.
+
+NEW - Creates a new and blank level to begin working on.
+OPEN - Loads an existing level file for modification.
+SAVE - Saves the currently loaded level.
+SAVE AS - Saves the currently loaded level to a new file.
+
+GPAK UNPACK - Unpacks a .gpak file's content.
+GPAK PACK - Packs a directory's content into a .gpak file.
+
+UNDO - Reverses the last action performed.
+REDO - Redoes the last action that was reveresed.
+
+RESIZE - Allows for resizing of the level content.
+
+FLIP HORIZONTAL - Horizontally flips the level content.
+FLIP VERTICAL - Vertically flips the level content.
+
+SYMMETRY HORIONTAL - Mirrors all actions horizontally.
+SYMMETRY VERTICAL - Mirrors all actions vertically.
+
+BRUSH - Selects the brush tool.
+FILL - Selects the fill tool.
+SELECT - Selects the select tool.
+
+GRID - Toggles the grid visual on and off.
+CAMERA - Toggles the camera boundaries of the level on and off. The screen will
+be filled red if an invalid camera boundary is present.
+
+RUN - Runs the game normally, without modding settings (fast-start) enabled.
+RUN DEBUG - Runs the game with modding settings (fast-start) enabled.
+
+SETTINGS - Currently non-functional, modify the settings.txt manually instead.
+HELP - Opens the Modder's Manual, to provide help whilst editing.
+
+HOTKEYS AND CONTROLS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The following lists all the hotkeys/shortcuts and controls for the editor.
+(Currently hotkeys/shortcuts are not rebindable).
+
+LEFT-CLICK - Draw/fill (depending on which tool is selected).
+RIGHT-CLICK - Erase/fill-erase (depending on which tool is selected).
+
+MIDDLE-CLICK - Drag to pan the camera around the level area.
+CTRL+0 - Realign the camera to the top-left of the level (reset's zoom).
+
+LEFT - Move the camera left.
+RIGHT - Move the camera right.
+UP - Move the camera up.
+DOWN - Move the camera down.
+
+SHIFT+LEFT/RIGHT-CLICK (Whilst Using Fill Tool) - Replace all instances of tile.
+
+SCROLLWHEEL - Scroll through the tiles in the currently selected tile group.
+Q and E - Scroll through the tiles in the currently selected tile group.
+ALT+SCROLLWHEEL - Scroll through the groups in the currently selected category.
+ALT+Q and E - Scroll through the groups in the currently selected category.
+ALT+SHIFT+SCROLLWHEEL - Scroll through the different tile categories.
+ALT+SHIFT+Q and E - Scroll through the different tile categories.
+
+1 - Jump to Basic category.
+2 - Jump to Tag category.
+3 - Jump to Overlay category.
+4 - Jump to Enemy category.
+5 - Jump to Back category.
+
+CTRL+1 - Toggle layer Active (Basic+Enemy) visibility/content-locking.
+CTRL+2 - Toggle layer Tag visibility/content-locking.
+CTRL+3 - Toggle layer Overlay visibility/content-locking.
+CTRL+4 - Toggle layer Back 1 visibility/content-locking.
+CTRL+5 - Toggle layer Back 2 visibility/content-locking.
+
+CTRL+N - New.
+CTRL+O - Open.
+CTRL+S - Save.
+CTRL+SHIFT+S - Save As.
+
+CTRL+U - Unpacks a .gpak file's content.
+CTRL+P - Packs a directory's content into a .gpak file.
+
+CTRL+Z - Undo.
+CTRL+Y - Redo.
+CTRL+SHIFT+Z - Start of undo history.
+CTRL+SHIFT+Y - End of undo history.
+
+CTRL+R - Resize.
+
+J - Flip horizontal.
+K - Flip vertical.
+
+N - Toggle horizontal symmetry.
+M - Toggle vertical symmetry.
+
+B - Select the brush tool.
+F - Select the fill tool.
+S - Select the select tool.
+
+G - Toggle the grid.
+C - Toggle the camera bounds.
+
+F6 - Run the game.
+F7 - Run the game in debug mode.
+
+F2 - Settings (inactive).
+F1 - Help.
+
+CTRL+D - Deselects the current selection.
+RIGHT-CLICK - Deselects the current selection (must be using the select tool).
+DELETE - Deletes everything within the current selection.
+
+CTRL+C - Copy current selection.
+CTRL+X - Cut current selection.
+CTRL+V - Paste current selection.
+
+CTLR+PLUS - Zoom in.
+CTRL+MINUS - Zoom out.
+CTRL+SCROLLWHEEL - Zoom.
+
+BACKUPS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+If level data is lost or saved over, looking in the backups folder may be
+helpful, as a previous version of the level will most likely be saved there.
+
+By default, the backups folders will store 3 saves per level, however, this value
+can be changed by modifying the settings.dat file.
+
+- PLANS FOR FUTURE VERSIONS ----------------------------------------------------
+
+An options menu where settings can be modified properly.
+Smart draw for faster multi-directional tile-placement.
+Rebindable keys and a wider variety of settings available.
+More functionality with the select tool (move, flip, rotate current selection).
+Optimisation and general improvements / bug fixes.
+And more!
+
+If you have any suggestions for future features, please let me know in TEIN Public
+Discord Server: @JRob774
+
+- REMARKS ----------------------------------------------------------------------
+
+Currently when packing/unpacking a GPAK the editor will stop responding until
+the task is complete. This will be resolved in a future update but is entirely
+normal for now.
+
+- CREDITS ----------------------------------------------------------------------
+
+This program was developed by Joshua Robertson.
+
+Thank you for downloading, I hope you enjoy.

@@ -1,0 +1,78 @@
+
+Version 0.1.5
+
+- Changes to many back-end features; may potentially result in executable performance improvements.
+- Added a "Cancel" option to the Unsaved Changes message box to cancel the operation.
+- Improved error log message formatting when producing a stacktrace (hex addresses are now fixed-width).
+- Fixed a bug where fill and instance-replace would not work outside of a selection box when there was one.
+- Levels of varying sizes can now be created, loaded, and saved (minimum level size 54x32 tiles).
+- Added the ability to pan the camera around levels using either the arrow keys or by holding middle-mouse and dragging.
+- Added the ability to zoom in and out of a level using either CTRL+PLUS and CTRL+MINUS or CTRL+SCROLLWHEEL.
+- Pressing CTRL+0 will realign the camera with the top-left corner of the level and reset the zoom to 1x scale.
+- Added a resize tool which can be used to change the size of the currently loaded level (minimum level size 54x32).
+- Dragging a selection box off-screen on a large/zoomed level will automatically pan the camera, for convenience.
+- Removed the ability to use custom tile graphics (may potentially be reimplemented later on).
+- Made it so that the clipboard preview only renders currently active layers (aka. what will be pasted).
+- Made it so that the clipboard preview shows clipboard layers underneath as semi-transparent.
+- General optimisations, fixes, and improvements.
+
+Version 0.1.4
+
+- Selection delete, cutting, and pasting, all now work with symmetry.
+- Fixed a bug with TEIN settings.txt backup not deleting itself after being restored.
+- Multi-directional tiles (spikes, level transitions, move tags, etc.) will now flip appropriately when using flips and symmetry.
+- Added new options to settings.dat to make each layer's alpha value a unique variable, for more visual control.
+- Modified the default alpha values of each layer when semi-transparent so that the editor is more visually appealing and readable than before.
+- Various changes and improvements to the new editor tile graphics:
+	- Yellow and green tag tiles have been made less vibrant and more clear.
+	- The toxic cloud tile is now grey, rather than green.
+	- New directional and multi-directional crusher tag tile graphics.
+	- New directional and line-of-sight turret tile graphics.
+- Added the ability to pack and unpack GPAKs using the editor, rather than needing an external tool. Available through the hotbar.
+	Note: In its current state, this will cause the editor to stop responding briefly, this is normal for now but will be fixed in a future update.
+- Added settings that allow for a custom tile graphics sheet to be used "use_external_tile_graphics" "external_tile_graphics_path" (template available with download link).
+- All layers can now have their visibility toggled, using the CTRL+1 to 5 (Basic+Enemy being 1, Tag being 2, etc.).
+	Note: This allows for selections of specific layers as inivisible layers have their content locked and can't be modified.
+- Added a new option to settings.dat that allows for modifying the alpha for inactive tiles in the tile panel "tilepanel_inactive_tile_alpha".
+- General optimisations, fixes, and improvements.
+
+Version 0.1.3
+
+- Fixed a parsing problem with the settings.dat file failing to read the last line.
+
+Version 0.1.2
+
+- New option in settings.dat to change the colour of the hotbar buttons "hotbar_buttons_color".
+- Numbers 1 to 5 jump to the corresponding tile category (Basic being 1, Tag being 2, etc.).
+- A large improvement to the speed of undoing and redoing.
+- A large improvement to the speed of the fill tool.
+- Holding SHIFT whilst using the fill tool will now replace all instances of a tile (or erase all instances with right-click).
+	Note: this does not work with symmetry as it is designed as a way to swap out all instances of a tile, not add new tiles.
+- Dragging a level file onto the executable, or using command line args, will load the level on startup.
+- Dragging a level file onto the application window will load it.
+- Added a setting to change the colour of the text in the tile panel "tilepaneL_text_color".
+- CTRL+A selects everything in the editor.
+- Filling or SHIFT filling (replacing all instances) inside of a selection will now only effect the selected area.
+- Improvements and changes to new tile graphics.
+- Added tool-tips for the different tiles and hotbar buttons.
+- Added settings for modifying tool-tip colours: "tooltip_color", "tooltip_title_color", and "tooltip_text_color".
+- Added the option to enable or disable tool-tips "use_tooltips".
+- Whilst holding CTRL, if the clipboard is not empty, it will showcase a ghosted version of the tiles that will be placed.
+- Remapped scrolling through tile groups and categories from CTRL to ALT, due to the ghosted clipboard addition.
+- Fixed some problems and bugs with undoing and redoing in special cases.
+- Added yellow Level Transition tiles to the editor.
+- The editor will make a backup of your game's settings before modifying them and will restore the backup on exit, so nothing is altered.
+- General optimisations, fixes, and improvements.
+
+Version 0.1.1
+
+- Changed the Undo and Redo graphics to be round.
+- Disabled and enabled button graphics were made more distinguishable.
+- All inactive tools will now appear disabled.
+- Overlay variants of Solid and Fake Solid have new tile graphics.
+- Lines of symmetry will now be rendered on the editor when either is enabled.
+- Added new options to settings.dat:
+	- Toggle between using the custom cursor and system cursor.
+	- Toggle between using custom tool cursors and the normal arrow cursor.
+	- Toggle between displaying the cursor when using tools and hiding it.
+	- Modify the colour of the symmetry lines.
