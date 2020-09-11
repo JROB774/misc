@@ -37,9 +37,9 @@ static constexpr const char MAP[] =
 "0     0  1110000"
 "0     3        0"
 "0   10000      0"
-"0   0   11100  0"
-"0   0   0      0"
-"0   0   1  00000"
+"0   3   11100  0"
+"5   4   0      0"
+"5   4   1  00000"
 "0       1      0"
 "2       1      0"
 "0       0      0"
@@ -87,6 +87,19 @@ static void draw_rect (Image& image, int x, int y, int w, int h, u32 color)
             image.pixels[cy * image.w + cx] = color;
         }
     }
+}
+
+static std::vector<u32> texture_column (const Texture& texture, int texture_id, int texture_coord, int column_height)
+{
+    assert(texture_coord < texture.size && texture_id < texture.count);
+    std::vector<u32> column(column_height);
+    for (int y=0; y<column_height; ++y)
+    {
+        int px = texture_id * texture.size + texture_coord;
+        int py = (y * texture.size) / column_height;
+        column[y] = texture.pixels[py * texture.w + px];
+    }
+    return column;
 }
 
 static bool load_texture (const std::string file_name, Texture& texture)
@@ -169,14 +182,6 @@ int main (int argc, char** argv)
         return 0;
     }
 
-    // Setup random colors for the tiles.
-    constexpr int NUM_COLORS = 10;
-    u32 colors[NUM_COLORS];
-    for (int i=0; i<NUM_COLORS; ++i)
-    {
-        colors[i] = pack_color(rand()%0xFF, rand()%0xFF, rand()%0xFF);
-    }
-
     // Draw tiles for each of the filled in spaces on the map.
     constexpr int RECT_W = ((WIN_W/2) / MAP_W);
     constexpr int RECT_H = ((WIN_H  ) / MAP_H);
@@ -186,10 +191,10 @@ int main (int argc, char** argv)
         for (int ix=0; ix<MAP_W; ++ix)
         {
             if (MAP[iy * MAP_W + ix] == ' ') continue;
-            int color_index = MAP[iy * MAP_W + ix] - '0';
-            assert(color_index < NUM_COLORS);
+            int texture_id = MAP[iy * MAP_W + ix] - '0';
+            assert(texture_id < walls.count);
             int rx = ix*RECT_W, ry = iy*RECT_H;
-            draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, colors[color_index]);
+            draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, walls.pixels[texture_id*walls.size]);
         }
     }
 
@@ -211,10 +216,28 @@ int main (int argc, char** argv)
             // When a ray hits a wall draw the 3D representation to the right viewport.
             if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ')
             {
-                int color_index = MAP[((int)(cy)) * MAP_W + ((int)(cx))] - '0';
-                assert(color_index < NUM_COLORS);
+                int texture_id = MAP[((int)(cy)) * MAP_W + ((int)(cx))] - '0';
+                assert(texture_id < walls.count);
                 int height = (int)((float)(WIN_H) / (t*cosf(angle-player_a)));
-                draw_rect(framebuffer, ((WIN_W/2)+i), ((WIN_H/2)-(height/2)), 1, height, colors[color_index]);
+
+                // These contain fractional parts of cx and cy and vary between [-0.5 to +0.5] and one of them will be close to zero.
+                float hitx = cx - floorf(cx + 0.5f);
+                float hity = cy - floorf(cy + 0.5f);
+
+                // Determine if we hit vertical or horizontal.
+                int texcoord = ((abs(hity) > abs(hitx)) ? (int)(hity*walls.size) : (int)(hitx*walls.size));
+                if (texcoord < 0) texcoord += walls.size; // Coordinate can be negative, so we need to fix it.
+                assert(texcoord >= 0 && texcoord < walls.size);
+
+                auto column = texture_column(walls, texture_id, texcoord, height);
+                pix_x = (float)((WIN_W/2)+i);
+                for (int j=0; j<height; ++j)
+                {
+                    pix_y = (float)(j + ((WIN_H/2)-(height/2)));
+                    if ((pix_y < 0) || (pix_y >= WIN_H)) continue;
+                    framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = column[j];
+                }
+
                 break; // We don't need to continue casting the ray.
             }
         }
