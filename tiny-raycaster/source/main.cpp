@@ -1,12 +1,19 @@
 #define _USE_MATH_DEFINES
 
 #include <cstdlib>
+#include <cstdio>
 #include <cstdint>
 #include <cmath>
 #include <cassert>
 #include <fstream>
 #include <string>
 #include <vector>
+
+#include "external/defer.hpp"
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
+#include "external/stb_image.h"
 
 typedef  uint8_t  u8;
 typedef uint16_t u16;
@@ -40,10 +47,18 @@ static constexpr const char MAP[] =
 "0              0"
 "0002222222200000";
 
+struct Texture
+{
+    std::vector<u32> pixels;
+    int w,h;
+    int count; // Number of individual textures.
+    int size;  // Size of the textures.
+};
+
 struct Image
 {
     std::vector<u32> pixels;
-    int w, h;
+    int w,h;
 };
 
 static void unpack_color (u32 color, u8& r, u8& g, u8& b, u8& a)
@@ -72,6 +87,45 @@ static void draw_rect (Image& image, int x, int y, int w, int h, u32 color)
             image.pixels[cy * image.w + cx] = color;
         }
     }
+}
+
+static bool load_texture (const std::string file_name, Texture& texture)
+{
+    constexpr int BPP = 4;
+    int w,h,bpp;
+    u8* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP); // We force RGBA color.
+    if (!data)
+    {
+        fprintf(stderr, "Failed to load texture file (%s)!\n", file_name.c_str());
+        return false;
+    }
+    defer { stbi_image_free(data); };
+
+    texture.w     = w;
+    texture.h     = h;
+    texture.count = w/h;
+    texture.size  = w/texture.count;
+
+    if (w != (h * texture.count))
+    {
+        fprintf(stderr, "File (%s) must contain square textures packed horizontally!\n", file_name.c_str());
+        return false;
+    }
+
+    texture.pixels = std::vector<u32>(w*h);
+    for (int iy=0; iy<h; ++iy)
+    {
+        for (int ix=0; ix<w; ++ix)
+        {
+            u8 r = data[((iy*w+ix)*4)+0];
+            u8 g = data[((iy*w+ix)*4)+1];
+            u8 b = data[((iy*w+ix)*4)+2];
+            u8 a = data[((iy*w+ix)*4)+3];
+            texture.pixels[iy*w+ix] = pack_color(r,g,b,a);
+        }
+    }
+
+    return true;
 }
 
 static void save_ppm (const std::string file_name, const Image& image)
@@ -106,6 +160,14 @@ int main (int argc, char** argv)
     framebuffer.pixels.resize(WIN_W*WIN_H, pack_color(0xFF,0xFF,0xFF)); // Fill the framebuffer with white.
     framebuffer.w = WIN_W;
     framebuffer.h = WIN_H;
+
+    // Load all of the wall textures.
+    Texture walls;
+    if (!load_texture("data/walls.png", walls))
+    {
+        fprintf(stderr, "Failed to load the wall textures!\n");
+        return 0;
+    }
 
     // Setup random colors for the tiles.
     constexpr int NUM_COLORS = 10;
