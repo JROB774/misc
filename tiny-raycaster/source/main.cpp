@@ -1,4 +1,7 @@
+#define _USE_MATH_DEFINES
+
 #include <cstdint>
+#include <cmath>
 #include <cassert>
 #include <fstream>
 #include <string>
@@ -10,6 +13,8 @@ typedef uint32_t u32;
 typedef   int8_t  s8;
 typedef  int16_t s16;
 typedef  int32_t s32;
+
+static constexpr float FOV = ((float)(M_PI)) / 3.0f;
 
 static constexpr int WIN_W = 512;
 static constexpr int WIN_H = 512;
@@ -134,18 +139,22 @@ int main (int argc, char** argv)
 
     draw_rect(framebuffer, (int)(px), (int)(py), 5,5, pack_color(0xFF,0xFF,0xFF));
 
-    // Cast a single ray out from the player's view direction.
-    for (float t=0.0f; t<20.0f; t+=0.05f)
+    // Cast rays out for each vertical line of the window.
+    for (int i=0; i<WIN_W; ++i)
     {
-        float cx = player_x + t * cosf(player_a);
-        float cy = player_y + t * sinf(player_a);
+        float angle = (player_a - (FOV/2.0f)) + (FOV * ((float)(i) / (float)(WIN_W)));
+        for (float t=0.0f; t<20.0f; t+=0.05f)
+        {
+            float cx = player_x + t * cosf(angle);
+            float cy = player_y + t * sinf(angle);
 
-        if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ') break;
+            if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ') break;
 
-        float pix_x = cx * (float)(RECT_W);
-        float pix_y = cy * (float)(RECT_H);
+            float pix_x = cx * (float)(RECT_W);
+            float pix_y = cy * (float)(RECT_H);
 
-        framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xFF,0xFF,0xFF);
+            framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xFF,0xFF,0xFF);
+        }
     }
 
     save_ppm("output.ppm", framebuffer);
