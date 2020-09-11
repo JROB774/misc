@@ -2,7 +2,10 @@
 
 @echo off
 
-set Libraries=
+set Libraries=                                                       ^
+SDL2main.lib SDL2.lib opengl32.lib dinput8.lib dxguid.lib user32.lib ^
+gdi32.lib winmm.lib imm32.lib ole32.lib oleaut32.lib shell32.lib     ^
+version.lib uuid.lib advapi32.lib setupapi.lib setargv.obj
 
 :: Select which architecture you want by uncommenting.
 :: set Architecture=x86
@@ -12,8 +15,8 @@ set Libraries=
    set BuildMode=Debug
 :: set BuildMode=Release
 
-set IncludeDirs=
-set LibraryDirs=
+set IncludeDirs=-I ..\source\external\
+set LibraryDirs=-libpath:..\library\win32\%Architecture%\
 
 set Defines=
 

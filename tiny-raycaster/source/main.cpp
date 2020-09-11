@@ -10,11 +10,12 @@
 #include <string>
 #include <vector>
 
-#include "external/defer.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_STATIC
-#include "external/stb_image.h"
+
+#include <SDL2/SDL.h>
+#include <stb_image.h>
+#include <defer.hpp>
 
 #include "utils.hpp"
 #include "framebuffer.hpp"
