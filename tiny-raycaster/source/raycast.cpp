@@ -114,13 +114,6 @@ static void render (Framebuffer& fbuf, Map& map, Player& player, Texture& walls,
         }
     }
 
-    // Sort the sprites so they draw in the correct order.
-    for (int i=0; i<sprites.size(); i++)
-    {
-        sprites[i].player_dist = sqrtf(powf(player.x - sprites[i].x, 2) + powf(player.y - sprites[i].y, 2));
-    }
-    std::sort(sprites.begin(), sprites.end()); // sort it from farthest to closest
-
     // Draw sprites.
     for (int i=0; i<sprites.size(); ++i) {
         map_show_sprite(fbuf, map, sprites[i]);

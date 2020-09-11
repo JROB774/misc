@@ -6,5 +6,8 @@ struct Player
     float a;
     float fov;
 
+    int turn;
+    int walk;
+
     Player (float px, float py, float pa, float pfov);
 };

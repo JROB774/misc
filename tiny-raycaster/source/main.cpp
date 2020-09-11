@@ -6,6 +6,8 @@
 #include <cmath>
 #include <cassert>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -46,33 +48,85 @@ int main (int argc, char** argv)
 
     std::vector<Sprite> sprites { { 3.523f, 3.812f, 2, 0 }, { 1.834f, 8.765f, 0, 0 }, { 5.323f, 5.365f, 1, 0 }, { 4.123f, 10.265f, 1, 0 } };
 
-    render(fbuf, map, player, walls, monsters, sprites);
-
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
 
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(fbuf.w, fbuf.h, SDL_WINDOW_SHOWN, &window, &renderer);
+    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, fbuf.w, fbuf.h);
 
     assert(window);
     assert(renderer);
-
-    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, fbuf.w, fbuf.h);
     assert(texture);
-    SDL_UpdateTexture(texture, NULL, (void*)(fbuf.pixels.data()), fbuf.w*4);
 
     bool running = true;
     SDL_Event event;
+
+    auto t1 = std::chrono::high_resolution_clock::now();
     while (running)
     {
+        // Sleep for a small period of time.
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> fp_ms = t2 - t1;
+        if (fp_ms.count() < 20)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(3));
+            continue;
+        }
+        t1 = t2;
+
         while (SDL_PollEvent(&event))
         {
-            if (event.type == SDL_QUIT)
+            switch (event.type)
             {
-                running = false;
+                case (SDL_KEYDOWN):
+                {
+                    switch (event.key.keysym.sym)
+                    {
+                        case (SDLK_a): player.turn = -1; break;
+                        case (SDLK_d): player.turn =  1; break;
+                        case (SDLK_w): player.walk =  1; break;
+                        case (SDLK_s): player.walk = -1; break;
+                    }
+                } break;
+                case (SDL_KEYUP):
+                {
+                    switch (event.key.keysym.sym)
+                    {
+                        case (SDLK_a): case (SDLK_d): player.turn = 0; break;
+                        case (SDLK_w): case (SDLK_s): player.walk = 0; break;
+                    }
+                } break;
+                case (SDL_QUIT):
+                {
+                    running = false;
+                } break;
             }
         }
 
+        // Turn the player.
+        player.a += (float)(player.turn) * 0.05f;
+
+        // Move the player.
+        float nx = player.x + player.walk * cosf(player.a) * 0.05f;
+        float ny = player.y + player.walk * sinf(player.a) * 0.05f;
+        if ((((int)(nx))>=0) && (((int)(nx))<((int)(map.w))) && (((int)(ny))>=0) && (((int)(ny))<((int)(map.h))))
+        {
+            if (map.is_empty(nx, player.y)) player.x = nx;
+            if (map.is_empty(player.x, ny)) player.y = ny;
+        }
+
+        // Update sprite distances.
+        for (int i=0; i<sprites.size(); i++)
+        {
+            sprites[i].player_dist = sqrtf(powf(player.x - sprites[i].x, 2) + powf(player.y - sprites[i].y, 2));
+        }
+        std::sort(sprites.begin(), sprites.end());
+
+        // Render the scene.
+        render(fbuf, map, player, walls, monsters, sprites);
+
+        SDL_UpdateTexture(texture, NULL, (void*)(fbuf.pixels.data()), fbuf.w*4);
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, texture, NULL,NULL);
         SDL_RenderPresent(renderer);
