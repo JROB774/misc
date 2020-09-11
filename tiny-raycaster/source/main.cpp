@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 
+#include <cstdlib>
 #include <cstdint>
 #include <cmath>
 #include <cassert>
@@ -95,16 +96,24 @@ int main (int argc, char** argv)
 {
     assert(sizeof(MAP) == ((MAP_W*MAP_H)+1)); // +1 for the null-terminator.
 
+    // Setup our player character.
     float player_x = 3.456f;
     float player_y = 2.345f;
     float player_a = 1.523f;
 
+    // Setup our framebuffer for drawing to.
     Image framebuffer;
-
     framebuffer.pixels.resize(WIN_W*WIN_H, pack_color(0xFF,0xFF,0xFF)); // Fill the framebuffer with white.
-
     framebuffer.w = WIN_W;
     framebuffer.h = WIN_H;
+
+    // Setup random colors for the tiles.
+    constexpr int NUM_COLORS = 10;
+    u32 colors[NUM_COLORS];
+    for (int i=0; i<NUM_COLORS; ++i)
+    {
+        colors[i] = pack_color(rand()%0xFF, rand()%0xFF, rand()%0xFF);
+    }
 
     // Draw tiles for each of the filled in spaces on the map.
     constexpr int RECT_W = ((WIN_W/2) / MAP_W);
@@ -115,8 +124,10 @@ int main (int argc, char** argv)
         for (int ix=0; ix<MAP_W; ++ix)
         {
             if (MAP[iy * MAP_W + ix] == ' ') continue;
+            int color_index = MAP[iy * MAP_W + ix] - '0';
+            assert(color_index < NUM_COLORS);
             int rx = ix*RECT_W, ry = iy*RECT_H;
-            draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, pack_color(0x00,0xFF,0xFF));
+            draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, colors[color_index]);
         }
     }
 
@@ -124,7 +135,7 @@ int main (int argc, char** argv)
     for (int i=0; i<(WIN_W/2); ++i)
     {
         float angle = (player_a - (FOV/2.0f)) + (FOV * ((float)(i) / (float)(WIN_W/2)));
-        for (float t=0.0f; t<20.0f; t+=0.05f)
+        for (float t=0.0f; t<20.0f; t+=0.01f)
         {
             float cx = player_x + t * cosf(angle);
             float cy = player_y + t * sinf(angle);
@@ -138,8 +149,10 @@ int main (int argc, char** argv)
             // When a ray hits a wall draw the 3D representation to the right viewport.
             if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ')
             {
+                int color_index = MAP[((int)(cy)) * MAP_W + ((int)(cx))] - '0';
+                assert(color_index < NUM_COLORS);
                 int height = (int)((float)(WIN_H) / t);
-                draw_rect(framebuffer, ((WIN_W/2)+i), ((WIN_H/2)-(height/2)), 1, height, pack_color(0x00,0xFF,0xFF));
+                draw_rect(framebuffer, ((WIN_W/2)+i), ((WIN_H/2)-(height/2)), 1, height, colors[color_index]);
                 break; // We don't need to continue casting the ray.
             }
         }
