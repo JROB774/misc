@@ -16,10 +16,10 @@ typedef  int32_t s32;
 
 static constexpr float FOV = ((float)(M_PI)) / 3.0f;
 
-static constexpr int WIN_W = 512;
-static constexpr int WIN_H = 512;
-static constexpr int MAP_W =  16;
-static constexpr int MAP_H =  16;
+static constexpr int WIN_W = 1024;
+static constexpr int WIN_H =  512;
+static constexpr int MAP_W =   16;
+static constexpr int MAP_H =   16;
 
 static constexpr const char MAP[] =
 "0000222222220000"
@@ -67,7 +67,7 @@ static void draw_rect (Image& image, int x, int y, int w, int h, u32 color)
         for (int iy=0; iy<h; ++iy)
         {
             int cx = x+ix, cy = y+iy;
-            assert((cx < image.w) && (cy < image.h));
+            if ((cx >= image.w) || (cy >= image.h)) continue; // No need to draw negative values.
             image.pixels[cy * image.w + cx] = color;
         }
     }
@@ -101,27 +101,14 @@ int main (int argc, char** argv)
 
     Image framebuffer;
 
-    framebuffer.pixels.resize(WIN_W*WIN_H, 0x000000FF); // Fill the framebuffer with red.
+    framebuffer.pixels.resize(WIN_W*WIN_H, pack_color(0xFF,0xFF,0xFF)); // Fill the framebuffer with white.
 
     framebuffer.w = WIN_W;
     framebuffer.h = WIN_H;
 
-    // Draw a smooth gradient across the whole of the framebuffer.
-    for (int iy=0; iy<framebuffer.h; ++iy)
-    {
-        for (int ix=0; ix<framebuffer.w; ++ix)
-        {
-            u8 r = (u8)(0xFF * iy / framebuffer.h);
-            u8 g = (u8)(0xFF * ix / framebuffer.w);
-            u8 b = (u8)(0x00);
-
-            framebuffer.pixels[iy * framebuffer.w + ix] = pack_color(r,g,b);
-        }
-    }
-
     // Draw tiles for each of the filled in spaces on the map.
-    constexpr int RECT_W = WIN_W / MAP_W;
-    constexpr int RECT_H = WIN_H / MAP_H;
+    constexpr int RECT_W = ((WIN_W/2) / MAP_W);
+    constexpr int RECT_H = ((WIN_H  ) / MAP_H);
 
     for (int iy=0; iy<MAP_H; ++iy)
     {
@@ -133,27 +120,28 @@ int main (int argc, char** argv)
         }
     }
 
-    // Draw the player on the map.
-    float px = player_x * (float)(RECT_W);
-    float py = player_y * (float)(RECT_H);
-
-    draw_rect(framebuffer, (int)(px), (int)(py), 5,5, pack_color(0xFF,0xFF,0xFF));
-
-    // Cast rays out for each vertical line of the window.
-    for (int i=0; i<WIN_W; ++i)
+    // Cast rays out for each vertical line of the viewport (WIN_W/2).
+    for (int i=0; i<(WIN_W/2); ++i)
     {
-        float angle = (player_a - (FOV/2.0f)) + (FOV * ((float)(i) / (float)(WIN_W)));
+        float angle = (player_a - (FOV/2.0f)) + (FOV * ((float)(i) / (float)(WIN_W/2)));
         for (float t=0.0f; t<20.0f; t+=0.05f)
         {
             float cx = player_x + t * cosf(angle);
             float cy = player_y + t * sinf(angle);
 
-            if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ') break;
-
             float pix_x = cx * (float)(RECT_W);
             float pix_y = cy * (float)(RECT_H);
 
-            framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xFF,0xFF,0xFF);
+            // Draws the topdown view of the rays being fired out to the left viewport.
+            framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xA0,0xA0,0xA0);
+
+            // When a ray hits a wall draw the 3D representation to the right viewport.
+            if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ')
+            {
+                int height = (int)((float)(WIN_H) / t);
+                draw_rect(framebuffer, ((WIN_W/2)+i), ((WIN_H/2)-(height/2)), 1, height, pack_color(0x00,0xFF,0xFF));
+                break; // We don't need to continue casting the ray.
+            }
         }
     }
 
