@@ -15,235 +15,103 @@
 #define STB_IMAGE_STATIC
 #include "external/stb_image.h"
 
-typedef  uint8_t  u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef   int8_t  s8;
-typedef  int16_t s16;
-typedef  int32_t s32;
+#include "utils.hpp"
+#include "framebuffer.hpp"
+#include "map.hpp"
+#include "player.hpp"
+#include "texture.hpp"
 
-static constexpr float FOV = ((float)(M_PI)) / 3.0f;
+#include "utils.cpp"
+#include "framebuffer.cpp"
+#include "map.cpp"
+#include "player.cpp"
+#include "texture.cpp"
 
-static constexpr int WIN_W = 1024;
-static constexpr int WIN_H =  512;
-static constexpr int MAP_W =   16;
-static constexpr int MAP_H =   16;
-
-static constexpr const char MAP[] =
-"0000222222220000"
-"1              0"
-"1      11111   0"
-"1     0        0"
-"0     0  1110000"
-"0     3        0"
-"0   10000      0"
-"0   3   11100  0"
-"5   4   0      0"
-"5   4   1  00000"
-"0       1      0"
-"2       1      0"
-"0       0      0"
-"0 0000000      0"
-"0              0"
-"0002222222200000";
-
-struct Texture
+static int wall_x_texcoord (float x, float y, Texture& walls)
 {
-    std::vector<u32> pixels;
-    int w,h;
-    int count; // Number of individual textures.
-    int size;  // Size of the textures.
-};
+    // These contain fractional parts of cx and cy and vary between [-0.5 to +0.5] and one of them will be close to zero.
+    float hitx = x - floorf(x + 0.5f);
+    float hity = y - floorf(y + 0.5f);
 
-struct Image
-{
-    std::vector<u32> pixels;
-    int w,h;
-};
+    // Determine if we hit vertical or horizontal.
+    int tex = ((abs(hity) > abs(hitx)) ? (int)(hity*walls.size) : (int)(hitx*walls.size));
+    if (tex < 0) tex += walls.size; // Coordinate can be negative, so we need to fix it.
 
-static void unpack_color (u32 color, u8& r, u8& g, u8& b, u8& a)
-{
-    r = (color >>  0) & 0xFF;
-    g = (color >>  8) & 0xFF;
-    b = (color >> 16) & 0xFF;
-    a = (color >> 24) & 0xFF;
+    assert((tex>=0) && (tex<walls.size));
+
+    return tex;
 }
 
-static u32 pack_color (u8 r, u8 g, u8 b, u8 a = 0xFF)
+static void render (Framebuffer& fbuf, Map& map, Player& player, Texture& walls)
 {
-    return ((a << 24) + (b << 16) + (g << 8) + (r));
-}
+    fbuf.clear(pack_color(0xFF,0xFF,0xFF));
 
-static void draw_rect (Image& image, int x, int y, int w, int h, u32 color)
-{
-    assert((image.w*image.h) == image.pixels.size());
+    const int rw = (fbuf.w/2) / map.w;
+    const int rh = (fbuf.h  ) / map.h;
 
-    for (int ix=0; ix<w; ++ix)
+    // Draw the tile map.
+    for (int iy=0; iy<map.h; ++iy)
     {
-        for (int iy=0; iy<h; ++iy)
+        for (int ix=0; ix<map.w; ++ix)
         {
-            int cx = x+ix, cy = y+iy;
-            if ((cx >= image.w) || (cy >= image.h)) continue; // No need to draw negative values.
-            image.pixels[cy * image.w + cx] = color;
-        }
-    }
-}
+            if (map.is_empty(ix,iy)) continue; // Skip empties...
 
-static std::vector<u32> texture_column (const Texture& texture, int texture_id, int texture_coord, int column_height)
-{
-    assert(texture_coord < texture.size && texture_id < texture.count);
-    std::vector<u32> column(column_height);
-    for (int y=0; y<column_height; ++y)
-    {
-        int px = texture_id * texture.size + texture_coord;
-        int py = (y * texture.size) / column_height;
-        column[y] = texture.pixels[py * texture.w + px];
-    }
-    return column;
-}
+            int rx = ix * rw;
+            int ry = iy * rh;
 
-static bool load_texture (const std::string file_name, Texture& texture)
-{
-    constexpr int BPP = 4;
-    int w,h,bpp;
-    u8* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP); // We force RGBA color.
-    if (!data)
-    {
-        fprintf(stderr, "Failed to load texture file (%s)!\n", file_name.c_str());
-        return false;
-    }
-    defer { stbi_image_free(data); };
+            int id = map.get_tile(ix,iy);
+            assert(id<walls.count);
 
-    texture.w     = w;
-    texture.h     = h;
-    texture.count = w/h;
-    texture.size  = w/texture.count;
-
-    if (w != (h * texture.count))
-    {
-        fprintf(stderr, "File (%s) must contain square textures packed horizontally!\n", file_name.c_str());
-        return false;
-    }
-
-    texture.pixels = std::vector<u32>(w*h);
-    for (int iy=0; iy<h; ++iy)
-    {
-        for (int ix=0; ix<w; ++ix)
-        {
-            u8 r = data[((iy*w+ix)*4)+0];
-            u8 g = data[((iy*w+ix)*4)+1];
-            u8 b = data[((iy*w+ix)*4)+2];
-            u8 a = data[((iy*w+ix)*4)+3];
-            texture.pixels[iy*w+ix] = pack_color(r,g,b,a);
+            fbuf.draw_rect(rx,ry,rw,rh, walls.get_pixel(0,0,id));
         }
     }
 
-    return true;
-}
-
-static void save_ppm (const std::string file_name, const Image& image)
-{
-    assert((image.w*image.h) == image.pixels.size());
-
-    std::ofstream file(file_name, std::ios::binary);
-    if (file.is_open())
+    // Ray marching loop.
+    for (int i=0; i<fbuf.w/2; ++i)
     {
-        file << "P6\n" << image.w << " " << image.h << "\n255\n";
-        for (int i=0; i<image.pixels.size(); ++i)
+        float angle = (player.a-(player.fov/2)) + (player.fov*(i/(float)(fbuf.w/2)));
+        for (float t=0.0f; t<20.0f; t+=0.01f)
         {
-            u8 r,g,b,a;
-            unpack_color(image.pixels[i], r,g,b,a);
-            file << (u8)(r) << (u8)(g) << (u8)(b);
+            float x = player.x + t * cosf(angle);
+            float y = player.y + t * sinf(angle);
+
+            // Draw the visibility cone.
+            fbuf.set_pixel(x*rw, y*rh, pack_color(0xA0,0xA0,0xA0));
+
+            if (map.is_empty(x,y)) continue;
+
+            // Draw the 3D perspective scene.
+            int id = map.get_tile(x,y);
+            assert(id<walls.count);
+            int height = fbuf.h/(t*cosf(angle-player.a));
+            int coord = wall_x_texcoord(x,y,walls);
+            auto column = walls.get_scaled_column(id,coord,height);
+            int px = i+(fbuf.w/2);
+            for (int j=0; j<height; ++j)
+            {
+                int py = j+(fbuf.h/2)-(height/2);
+                if ((py >= 0) && (py < (int)fbuf.h))
+                {
+                    fbuf.set_pixel(px,py,column[j]);
+                }
+            }
+
+            break;
         }
-        file.close();
     }
 }
 
 int main (int argc, char** argv)
 {
-    assert(sizeof(MAP) == ((MAP_W*MAP_H)+1)); // +1 for the null-terminator.
+    Framebuffer fbuf(1024, 512);
+    Player player(3.456f, 2.345f, 1.523f, M_PI/3.0f);
+    Texture walls("data/walls.png");
+    Map map;
 
-    // Setup our player character.
-    float player_x = 3.456f;
-    float player_y = 2.345f;
-    float player_a = 1.523f;
+    assert(walls.count);
 
-    // Setup our framebuffer for drawing to.
-    Image framebuffer;
-    framebuffer.pixels.resize(WIN_W*WIN_H, pack_color(0xFF,0xFF,0xFF)); // Fill the framebuffer with white.
-    framebuffer.w = WIN_W;
-    framebuffer.h = WIN_H;
-
-    // Load all of the wall textures.
-    Texture walls;
-    if (!load_texture("data/walls.png", walls))
-    {
-        fprintf(stderr, "Failed to load the wall textures!\n");
-        return 0;
-    }
-
-    // Draw tiles for each of the filled in spaces on the map.
-    constexpr int RECT_W = ((WIN_W/2) / MAP_W);
-    constexpr int RECT_H = ((WIN_H  ) / MAP_H);
-
-    for (int iy=0; iy<MAP_H; ++iy)
-    {
-        for (int ix=0; ix<MAP_W; ++ix)
-        {
-            if (MAP[iy * MAP_W + ix] == ' ') continue;
-            int texture_id = MAP[iy * MAP_W + ix] - '0';
-            assert(texture_id < walls.count);
-            int rx = ix*RECT_W, ry = iy*RECT_H;
-            draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, walls.pixels[texture_id*walls.size]);
-        }
-    }
-
-    // Cast rays out for each vertical line of the viewport (WIN_W/2).
-    for (int i=0; i<(WIN_W/2); ++i)
-    {
-        float angle = (player_a - (FOV/2.0f)) + (FOV * ((float)(i) / (float)(WIN_W/2)));
-        for (float t=0.0f; t<20.0f; t+=0.01f)
-        {
-            float cx = player_x + t * cosf(angle);
-            float cy = player_y + t * sinf(angle);
-
-            float pix_x = cx * (float)(RECT_W);
-            float pix_y = cy * (float)(RECT_H);
-
-            // Draws the topdown view of the rays being fired out to the left viewport.
-            framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xA0,0xA0,0xA0);
-
-            // When a ray hits a wall draw the 3D representation to the right viewport.
-            if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ')
-            {
-                int texture_id = MAP[((int)(cy)) * MAP_W + ((int)(cx))] - '0';
-                assert(texture_id < walls.count);
-                int height = (int)((float)(WIN_H) / (t*cosf(angle-player_a)));
-
-                // These contain fractional parts of cx and cy and vary between [-0.5 to +0.5] and one of them will be close to zero.
-                float hitx = cx - floorf(cx + 0.5f);
-                float hity = cy - floorf(cy + 0.5f);
-
-                // Determine if we hit vertical or horizontal.
-                int texcoord = ((abs(hity) > abs(hitx)) ? (int)(hity*walls.size) : (int)(hitx*walls.size));
-                if (texcoord < 0) texcoord += walls.size; // Coordinate can be negative, so we need to fix it.
-                assert(texcoord >= 0 && texcoord < walls.size);
-
-                auto column = texture_column(walls, texture_id, texcoord, height);
-                pix_x = (float)((WIN_W/2)+i);
-                for (int j=0; j<height; ++j)
-                {
-                    pix_y = (float)(j + ((WIN_H/2)-(height/2)));
-                    if ((pix_y < 0) || (pix_y >= WIN_H)) continue;
-                    framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = column[j];
-                }
-
-                break; // We don't need to continue casting the ray.
-            }
-        }
-    }
-
-    save_ppm("output.ppm", framebuffer);
+    render(fbuf, map, player, walls);
+    save_ppm("output.ppm", fbuf.pixels, fbuf.w, fbuf.h);
 
     return 0;
 }
