@@ -80,7 +80,7 @@ static void save_ppm (const std::string file_name, const Image& image)
         {
             u8 r,g,b,a;
             unpack_color(image.pixels[i], r,g,b,a);
-            file << static_cast<u8>(r) << static_cast<u8>(g) << static_cast<u8>(b);
+            file << (u8)(r) << (u8)(g) << (u8)(b);
         }
         file.close();
     }
@@ -89,6 +89,9 @@ static void save_ppm (const std::string file_name, const Image& image)
 int main (int argc, char** argv)
 {
     assert(sizeof(MAP) == ((MAP_W*MAP_H)+1)); // +1 for the null-terminator.
+
+    float player_x = 3.456f;
+    float player_y = 2.345f;
 
     Image framebuffer;
 
@@ -123,6 +126,12 @@ int main (int argc, char** argv)
             draw_rect(framebuffer, rx, ry, RECT_W, RECT_H, pack_color(0x00,0xFF,0xFF));
         }
     }
+
+    // Draw the player on the map.
+    float px = player_x * (float)(RECT_W);
+    float py = player_y * (float)(RECT_H);
+
+    draw_rect(framebuffer, (int)(px), (int)(py), 5,5, pack_color(0xFF,0xFF,0xFF));
 
     save_ppm("output.ppm", framebuffer);
 
