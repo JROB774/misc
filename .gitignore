@@ -8,5 +8,5 @@ gbdk/.bgbemu
 *.obj
 *.db
 *.exe
+*.pdb
 *.apk
-
