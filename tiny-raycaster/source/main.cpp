@@ -92,6 +92,7 @@ int main (int argc, char** argv)
 
     float player_x = 3.456f;
     float player_y = 2.345f;
+    float player_a = 1.523f;
 
     Image framebuffer;
 
@@ -132,6 +133,20 @@ int main (int argc, char** argv)
     float py = player_y * (float)(RECT_H);
 
     draw_rect(framebuffer, (int)(px), (int)(py), 5,5, pack_color(0xFF,0xFF,0xFF));
+
+    // Cast a single ray out from the player's view direction.
+    for (float t=0.0f; t<20.0f; t+=0.05f)
+    {
+        float cx = player_x + t * cosf(player_a);
+        float cy = player_y + t * sinf(player_a);
+
+        if (MAP[((int)(cy)) * MAP_W + ((int)(cx))] != ' ') break;
+
+        float pix_x = cx * (float)(RECT_W);
+        float pix_y = cy * (float)(RECT_H);
+
+        framebuffer.pixels[((int)(pix_y)) * WIN_W + ((int)(pix_x))] = pack_color(0xFF,0xFF,0xFF);
+    }
 
     save_ppm("output.ppm", framebuffer);
 
