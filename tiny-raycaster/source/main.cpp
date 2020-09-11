@@ -151,7 +151,7 @@ int main (int argc, char** argv)
             {
                 int color_index = MAP[((int)(cy)) * MAP_W + ((int)(cx))] - '0';
                 assert(color_index < NUM_COLORS);
-                int height = (int)((float)(WIN_H) / t);
+                int height = (int)((float)(WIN_H) / (t*cosf(angle-player_a)));
                 draw_rect(framebuffer, ((WIN_W/2)+i), ((WIN_H/2)-(height/2)), 1, height, colors[color_index]);
                 break; // We don't need to continue casting the ray.
             }
