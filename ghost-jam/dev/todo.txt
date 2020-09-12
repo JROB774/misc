@@ -1,0 +1,38 @@
+- sort visible sprites from back-to-front then draw them to avoid z-order issues (dont do this till we get better level format where entities are their own thing)
+
+- resource manager:
+    - don't like how i've done resource manager so will update it again (will mostly be the same)
+    - do resource loading on a separate thread and implement a load screen at startup and between areas
+    - properly handle resources and stuff as currently we leak memory
+    - add in the cache_all functionality
+    - hotloading
+
+- developer console
+- level editor (use tein/mew-genics as base):
+    - implement things system
+    - make game use new area format
+    - save changes prompt on quit!!!
+
+- calculate fps and draw it to the bottom-right corner of the game
+
+- lighting:
+    - implement depth/fog for areas (not really lighting but im putting it here)
+    - add fading to the lighting
+    - implement materials
+    - add ability for multiple light caster objects
+
+- bugs:
+    - fix the issue with memory leaking
+
+////////////////////////////////////////////////////////////////////////////////
+// JAMIE TODO //////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+- get started on an audio system:
+    - look into better alternatives to SDL_Mixer (so we can do proper 3d sound and have better control of aspects such as pitch, etc.)
+      OpenAL-Soft seems like it'll be good for what we want and doesn't seem *too* difficult based on this example:
+        - OpenAL-Soft example: [https://cranialburnout.blogspot.com/2012/08/openal-soft-demonstration-of-binaural.html]
+        - OpenAL-Soft: [https://kcat.strangesoft.net/openal.html#release]
+    - sound effects should be placed in their own SOUNDS catalog
+    - music should be placed in its own MUSIC catalog
+    - for now don't really need anything specific just playing sounds and music and testing out OpenAL

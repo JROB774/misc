@@ -1,0 +1,3 @@
+GLOBAL constexpr int GAME_VERSION_MAJOR = 1;
+GLOBAL constexpr int GAME_VERSION_MINOR = 0;
+GLOBAL constexpr int GAME_VERSION_PATCH = 0;

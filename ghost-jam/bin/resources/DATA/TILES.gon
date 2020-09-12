@@ -1,0 +1,90 @@
+// ID 10000 IS THE START OF FLATS
+// ID 20000 IS THE START OF WALLS
+// ID 30000 IS THE START OF CEILS
+
+// FLATS ///////////////////////////////////////////////////////////////////////
+
+DBGFLAT
+{
+    id 10000
+    type FLAT
+    texture DBGFLAT
+}
+COBBLE
+{
+    id 10001
+    type FLAT
+    texture COBBLE
+}
+ROCK
+{
+    id 10002
+    type FLAT
+    texture ROCK
+}
+ROCK2
+{
+    id 10003
+    type FLAT
+    texture ROCK2
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// WALLS ///////////////////////////////////////////////////////////////////////
+
+DBGWALL
+{
+    id 20000
+    type WALL
+    texture DBGWALL
+}
+BRICK
+{
+    id 20001
+    type WALL
+    texture BRICK
+}
+TILES
+{
+    id 20002
+    type WALL
+    texture TILES
+}
+REDTILES
+{
+    id 20003
+    type WALL
+    texture REDTILES
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// CEILS ///////////////////////////////////////////////////////////////////////
+
+DBGCEIL
+{
+    id 30000
+    type CEIL
+    texture DBGCEIL
+}
+PLANKS
+{
+    id 30001
+    type CEIL
+    texture PLANKS
+}
+LIGHT
+{
+    id 30002
+    type CEIL
+    texture LIGHT
+}
+HEXGRID
+{
+    id 30003
+    type CEIL
+    texture HEXGRID
+}
+
+////////////////////////////////////////////////////////////////////////////////

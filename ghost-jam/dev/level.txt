@@ -1,0 +1,42 @@
+// LEVEL FORMAT ////////////////////////////////////////////////////////////////
+
+U32 : VERSION
+U16 : WIDTH
+U16 : HEIGHT
+U16 : THING_COUNT
+STR : NAME          (NULL-TERMINATED)
+STR : EFFECT        (NULL-TERMINATED)
+STR : SKYBOX        (NULL-TERMINATED)
+STR : SKYBOX_EFFECT (NULL-TERMINATED)
+
+WIDTH*HEIGHT CEIL TILES
+WIDTH*HEIGHT WALL TILES
+WIDTH*HEIGHT FLAT TILES
+
+THING_COUNT THINGS
+
+// TILE FORMAT /////////////////////////////////////////////////////////////////
+
+U16 : ID
+U32 : FLAGS  (FLAGS)
+U8  : TINT_R (0-255)
+U8  : TINT_G (0-255)
+U8  : TINT_B (0-255)
+
+// THING FORMAT ////////////////////////////////////////////////////////////////
+
+U16 : ID
+U32 : FLAGS     (FLAGS)
+U8  : DIRECTION (FLAGS)
+U32 : X
+U32 : Y
+U32 : Z
+U8  : TINT_R    (0-255)
+U8  : TINT_G    (0-255)
+U8  : TINT_B    (0-255)
+
+NOTE:
+
+The X, Y, Z values will be stored in some sort of unit that will correspond to
+the floating-point coordinates of the game (where 1.0f is a tile's size). This
+will allow for placing of entities at different locations within a given tile.
