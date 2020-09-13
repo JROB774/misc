@@ -19,3 +19,4 @@ gbadev/**/*.d
 gbadev/**/*.map
 gbadev/**/*.elf
 gbadev/**/*.gba
+gbadev/**/*.sav
