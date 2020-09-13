@@ -13,3 +13,9 @@ gbdk/.bgbemu
 
 tiny-raycaster/binary/*.ppm
 tiny-raytracer/binary/*.ppm
+
+gbadev/**/*.o
+gbadev/**/*.d
+gbadev/**/*.map
+gbadev/**/*.elf
+gbadev/**/*.gba
