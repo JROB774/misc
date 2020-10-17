@@ -24,3 +24,4 @@ gbadev/**/*.sav
 emscripten/**/*.wasm
 emscripten/**/*.js
 emscripten/**/*.html
+emscripten/**/*.data
