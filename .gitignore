@@ -20,3 +20,7 @@ gbadev/**/*.map
 gbadev/**/*.elf
 gbadev/**/*.gba
 gbadev/**/*.sav
+
+emscripten/**/*.wasm
+emscripten/**/*.js
+emscripten/**/*.html
