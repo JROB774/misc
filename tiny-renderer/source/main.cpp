@@ -43,11 +43,26 @@ static constexpr int SCREEN_HEIGHT = 800;
 static RGBAColor gRenderbuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
 static float gDepthbuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
 
+static Vec3f barycentric (Vec3f a, Vec3f b, Vec3f c, Vec3f p)
+{
+    Vec3f s[2];
+    for (int i=2; i--;)
+    {
+        s[i].raw[0] = c.raw[i]-a.raw[i];
+        s[i].raw[1] = b.raw[i]-a.raw[i];
+        s[i].raw[2] = a.raw[i]-p.raw[i];
+    }
+    Vec3f u = s[0]^s[1];
+    if (abs(u.raw[2]) > 1e-2) return Vec3f(1.0f-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);
+    return Vec3f(-1,1,1);
+}
+
 static void draw_clear (RGBAColor color)
 {
     for (int i=0; i<(SCREEN_WIDTH*SCREEN_HEIGHT); ++i)
     {
         gRenderbuffer[i] = color;
+        gDepthbuffer[i] = -std::numeric_limits<float>::max();
     }
 }
 
@@ -115,41 +130,40 @@ static void draw_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
     draw_line(t2.x,t2.y, t0.x,t0.y, color);
 }
 
-static void fill_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
+static void fill_triangle (Vec3f t0, Vec3f t1, Vec3f t2, RGBAColor color)
 {
-    Vec2i pts[3] = { t0,t1,t2 };
-    Vec2i p;
+    Vec3f pts[3] = { t0,t1,t2 };
 
-    auto barycentric = [&]()
-    {
-        Vec3f a = Vec3f(pts[2].raw[0]-pts[0].raw[0], pts[1].raw[0]-pts[0].raw[0], pts[0].raw[0]-p.raw[0]);
-        Vec3f b = Vec3f(pts[2].raw[1]-pts[0].raw[1], pts[1].raw[1]-pts[0].raw[1], pts[0].raw[1]-p.raw[1]);
-        Vec3f u = a^b;
-        if (abs(u.raw[2]) < 1) return Vec3f(-1,1,1); // Triangle is degnerate so return negative for discard.
-        return Vec3f(1.0f-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);
-    };
+    Vec2f bmin( std::numeric_limits<float>::max(),  std::numeric_limits<float>::max());
+    Vec2f bmax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
-    Vec2i bmin(SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
-    Vec2i bmax(0,0);
-
-    Vec2i clamp(SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
+    Vec2f clamp(SCREEN_WIDTH-1, SCREEN_HEIGHT-1);
 
     for (int i=0; i<3; ++i)
     {
         for (int j=0; j<2; ++j)
         {
-            bmin.raw[j] = std::max(0, std::min(bmin.raw[j], pts[i].raw[j]));
+            bmin.raw[j] = std::max(0.0f, std::min(bmin.raw[j], pts[i].raw[j]));
             bmax.raw[j] = std::min(clamp.raw[j], std::max(bmax.raw[j], pts[i].raw[j]));
         }
     }
 
+    Vec3f p;
     for (p.x=bmin.x; p.x<=bmax.x; ++p.x)
     {
         for (p.y=bmin.y; p.y<=bmax.y; ++p.y)
         {
-            Vec3f baryscreen = barycentric();
+            Vec3f baryscreen = barycentric(t0,t1,t2, p);
             if (baryscreen.x < 0 || baryscreen.y < 0 || baryscreen.z < 0) continue;
-            draw_pixel(p.x,p.y, color);
+            p.z = 0;
+            for (int i=0; i<3; ++i) p.z += pts[i].raw[2]*baryscreen.raw[i]; // Calculate the Z value for the pixel.
+            // If it's closer to the camera than the current pixel at this location then draw it.
+            int index = (int)(p.y*SCREEN_WIDTH+p.x);
+            if (gDepthbuffer[index] < p.z)
+            {
+                gDepthbuffer[index] = p.z;
+                draw_pixel(p.x,p.y, color);
+            }
         }
     }
 }
@@ -173,19 +187,19 @@ static void draw_model (Model& model, RGBAColor color)
 static void fill_model (Model& model, RGBAColor color)
 {
     // Light is shooting out forward from the camera/screen.
-    Vec3f light_dir(0.0f,0.0f,-1.0f);
+    Vec3f light_dir(0.0f, 0.0f, -1.0f);
 
     for (int i=0; i<model.nfaces(); ++i)
     {
         std::vector<int> face = model.face(i);
 
         // Get the screen and world coordinates for a singble face.
-        Vec2i screen_coords[3];
+        Vec3f screen_coords[3];
         Vec3f world_coords[3];
         for (int j=0; j<3; j++)
         {
             Vec3f v = model.vert(face[j]);
-            screen_coords[j] = Vec2i((v.x+1)*(float)SCREEN_WIDTH/2, (v.y+1)*(float)SCREEN_HEIGHT/2);
+            screen_coords[j] = Vec3f((int)((v.x+1.0f)*(float)SCREEN_WIDTH/2.0f+0.5f), (int)((v.y+1.0f)*(float)SCREEN_HEIGHT/2.0f+0.5f), v.z);
             world_coords[j] = v;
         }
 
