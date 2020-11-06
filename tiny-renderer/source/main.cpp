@@ -91,12 +91,8 @@ static void draw_line (int x0, int y0, int x1, int y1, RGBAColor color)
     }
 }
 
-int main (int argc, char** argv)
+static void draw_model (Model& model, RGBAColor color)
 {
-    Model model("assets/african_head.obj");
-
-    draw_clear(MAKE_RGB(0,0,0));
-
     for (int i=0; i<model.nfaces(); ++i)
     {
         std::vector<int> face = model.face(i);
@@ -111,10 +107,17 @@ int main (int argc, char** argv)
             int x1 = (v1.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
             int y1 = (v1.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
 
-            draw_line(x0,y0, x1,y1, MAKE_RGB(255,255,255));
+            draw_line(x0,y0, x1,y1, color);
         }
     }
+}
 
+int main (int argc, char** argv)
+{
+    Model model("assets/african_head.obj");
+
+    draw_clear(MAKE_RGB(0,0,0));
+    draw_model(model, MAKE_RGB(255,255,255));
     draw_display();
 
     return 0;
