@@ -23,6 +23,20 @@ typedef uint32_t RGBAColor;
 #define MAKE_RGBA(r,g,b,a) ((RGBAColor)((((a   )<<24)|((b)<<16)|((g)<<8)|(r))))
 #define MAKE_RGB( r,g,b)   ((RGBAColor)((((0xFF)<<24)|((b)<<16)|((g)<<8)|(r))))
 
+static void split_rgba (RGBAColor color, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a)
+{
+    r = (color    ) & 0xFF;
+    g = (color>> 8) & 0xFF;
+    b = (color>>16) & 0xFF;
+    a = (color>>24) & 0xFF;
+}
+static void split_rgb (RGBAColor color, uint8_t& r, uint8_t& g, uint8_t& b)
+{
+    r = (color    ) & 0xFF;
+    g = (color>> 8) & 0xFF;
+    b = (color>>16) & 0xFF;
+}
+
 static constexpr int RENDERBUFFER_WIDTH = 800;
 static constexpr int RENDERBUFFER_HEIGHT = 800;
 
@@ -151,17 +165,35 @@ static void draw_model (Model& model, RGBAColor color)
 
 static void fill_model (Model& model, RGBAColor color)
 {
+    // Light is shooting out forward from the camera/screen.
+    Vec3f light_dir(0.0f,0.0f,-1.0f);
+
     for (int i=0; i<model.nfaces(); ++i)
     {
         std::vector<int> face = model.face(i);
+
+        // Get the screen and world coordinates for a singble face.
         Vec2i screen_coords[3];
+        Vec3f world_coords[3];
         for (int j=0; j<3; j++)
         {
-            Vec3f world_coords = model.vert(face[j]);
-            screen_coords[j].x = (world_coords.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
-            screen_coords[j].y = (world_coords.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
+            Vec3f v = model.vert(face[j]);
+            screen_coords[j] = Vec2i((v.x+1)*(float)RENDERBUFFER_WIDTH/2, (v.y+1)*(float)RENDERBUFFER_HEIGHT/2);
+            world_coords[j] = v;
         }
-        fill_triangle(screen_coords[0], screen_coords[1], screen_coords[2], color);
+
+        // Calculate the face normal and determine light level using this.
+        Vec3f n = (world_coords[2]-world_coords[0])^(world_coords[1]-world_coords[0]);
+        n.normalize();
+        float intensity = n * light_dir;
+
+        // Performs back-face culling. If the intensity is negative it means the face normal is
+        // facing away from camera and therefore does not and should not be rendered to the scene.
+        if (intensity > 0.0f)
+        {
+            uint8_t r,g,b; split_rgb(color, r,g,b);
+            fill_triangle(screen_coords[0], screen_coords[1], screen_coords[2], MAKE_RGB((int)((float)r*intensity),(int)((float)g*intensity),(int)((float)b*intensity)));
+        }
     }
 }
 
