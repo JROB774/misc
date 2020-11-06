@@ -37,14 +37,15 @@ static void split_rgb (RGBAColor color, uint8_t& r, uint8_t& g, uint8_t& b)
     b = (color>>16) & 0xFF;
 }
 
-static constexpr int RENDERBUFFER_WIDTH = 800;
-static constexpr int RENDERBUFFER_HEIGHT = 800;
+static constexpr int SCREEN_WIDTH = 800;
+static constexpr int SCREEN_HEIGHT = 800;
 
-static RGBAColor gRenderbuffer[RENDERBUFFER_WIDTH*RENDERBUFFER_HEIGHT];
+static RGBAColor gRenderbuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
+static float gDepthbuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
 
 static void draw_clear (RGBAColor color)
 {
-    for (int i=0; i<(RENDERBUFFER_WIDTH*RENDERBUFFER_HEIGHT); ++i)
+    for (int i=0; i<(SCREEN_WIDTH*SCREEN_HEIGHT); ++i)
     {
         gRenderbuffer[i] = color;
     }
@@ -53,14 +54,14 @@ static void draw_clear (RGBAColor color)
 static void draw_display ()
 {
     stbi_flip_vertically_on_write(true);
-    stbi_write_png("output.png", RENDERBUFFER_WIDTH,RENDERBUFFER_HEIGHT, sizeof(RGBAColor), gRenderbuffer, RENDERBUFFER_WIDTH*sizeof(RGBAColor));
+    stbi_write_png("output.png", SCREEN_WIDTH,SCREEN_HEIGHT, sizeof(RGBAColor), gRenderbuffer, SCREEN_WIDTH*sizeof(RGBAColor));
 }
 
 static void draw_pixel (int x, int y, RGBAColor color)
 {
-    if (x >= 0 && x < RENDERBUFFER_WIDTH && y >= 0 && y < RENDERBUFFER_HEIGHT)
+    if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)
     {
-        gRenderbuffer[y * RENDERBUFFER_WIDTH + x] = color;
+        gRenderbuffer[y * SCREEN_WIDTH + x] = color;
     }
 }
 
@@ -116,33 +117,39 @@ static void draw_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
 
 static void fill_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
 {
-    // No height triangles are discarded.
-    if (t0.y == t1.y && t0.y == t2.y) return;
+    Vec2i pts[3] = { t0,t1,t2 };
+    Vec2i p;
 
-    // Sort the vertices so t0 is lowest and t2 is highest.
-    if (t0.y > t1.y) std::swap(t0, t1);
-    if (t0.y > t2.y) std::swap(t0, t2);
-    if (t1.y > t2.y) std::swap(t1, t2);
-
-    int total_height = t2.y-t0.y;
-
-    for (int i=0; i<total_height; ++i)
+    auto barycentric = [&]()
     {
-        // We're in the second half if we're past the middle vertex or the triangle has a flat top.
-        bool in_second_half = ((i > t1.y-t0.y) || (t1.y == t0.y));
-        int segment_height = (in_second_half) ? t2.y-t1.y : t1.y-t0.y; // Calculate the height of either the top or bottom segment.
+        Vec3f a = Vec3f(pts[2].raw[0]-pts[0].raw[0], pts[1].raw[0]-pts[0].raw[0], pts[0].raw[0]-p.raw[0]);
+        Vec3f b = Vec3f(pts[2].raw[1]-pts[0].raw[1], pts[1].raw[1]-pts[0].raw[1], pts[0].raw[1]-p.raw[1]);
+        Vec3f u = a^b;
+        if (abs(u.raw[2]) < 1) return Vec3f(-1,1,1); // Triangle is degnerate so return negative for discard.
+        return Vec3f(1.0f-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);
+    };
 
-        // Get the points across the slopes of each of the two vertical lines.
-        float alpha = (float)i/total_height;
-        float beta = (float)(i-((in_second_half) ? t1.y-t0.y : 0)) / segment_height;
-        Vec2i a = t0 + (t2-t0) * alpha;
-        Vec2i b = (in_second_half) ? t1 + (t2-t1) * beta : t0 + (t1-t0) * beta;
-        if (a.x > b.x) std::swap(a,b);
+    Vec2i bmin(SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
+    Vec2i bmax(0,0);
 
-        // Draw the horizontal line between the two points.
-        for (int j=a.x; j<=b.x; ++j)
+    Vec2i clamp(SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
+
+    for (int i=0; i<3; ++i)
+    {
+        for (int j=0; j<2; ++j)
         {
-            draw_pixel(j,t0.y+i, color);
+            bmin.raw[j] = std::max(0, std::min(bmin.raw[j], pts[i].raw[j]));
+            bmax.raw[j] = std::min(clamp.raw[j], std::max(bmax.raw[j], pts[i].raw[j]));
+        }
+    }
+
+    for (p.x=bmin.x; p.x<=bmax.x; ++p.x)
+    {
+        for (p.y=bmin.y; p.y<=bmax.y; ++p.y)
+        {
+            Vec3f baryscreen = barycentric();
+            if (baryscreen.x < 0 || baryscreen.y < 0 || baryscreen.z < 0) continue;
+            draw_pixel(p.x,p.y, color);
         }
     }
 }
@@ -156,8 +163,8 @@ static void draw_model (Model& model, RGBAColor color)
         for (int j=0; j<3; j++)
         {
             Vec3f world_coords = model.vert(face[j]);
-            screen_coords[j].x = (world_coords.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
-            screen_coords[j].y = (world_coords.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
+            screen_coords[j].x = (world_coords.x + 1.0f) * (float)SCREEN_WIDTH  / 2.0f;
+            screen_coords[j].y = (world_coords.y + 1.0f) * (float)SCREEN_HEIGHT / 2.0f;
         }
         draw_triangle(screen_coords[0], screen_coords[1], screen_coords[2], color);
     }
@@ -178,7 +185,7 @@ static void fill_model (Model& model, RGBAColor color)
         for (int j=0; j<3; j++)
         {
             Vec3f v = model.vert(face[j]);
-            screen_coords[j] = Vec2i((v.x+1)*(float)RENDERBUFFER_WIDTH/2, (v.y+1)*(float)RENDERBUFFER_HEIGHT/2);
+            screen_coords[j] = Vec2i((v.x+1)*(float)SCREEN_WIDTH/2, (v.y+1)*(float)SCREEN_HEIGHT/2);
             world_coords[j] = v;
         }
 
