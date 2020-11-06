@@ -23,8 +23,8 @@ typedef uint32_t RGBAColor;
 #define MAKE_RGBA(r,g,b,a) ((RGBAColor)((((a   )<<24)|((b)<<16)|((g)<<8)|(r))))
 #define MAKE_RGB( r,g,b)   ((RGBAColor)((((0xFF)<<24)|((b)<<16)|((g)<<8)|(r))))
 
-static constexpr int RENDERBUFFER_WIDTH = 200;
-static constexpr int RENDERBUFFER_HEIGHT = 200;
+static constexpr int RENDERBUFFER_WIDTH = 800;
+static constexpr int RENDERBUFFER_HEIGHT = 800;
 
 static RGBAColor gRenderbuffer[RENDERBUFFER_WIDTH*RENDERBUFFER_HEIGHT];
 
@@ -138,33 +138,38 @@ static void draw_model (Model& model, RGBAColor color)
     for (int i=0; i<model.nfaces(); ++i)
     {
         std::vector<int> face = model.face(i);
-        for (int j=0; j<3; ++j)
+        Vec2i screen_coords[3];
+        for (int j=0; j<3; j++)
         {
-            Vec3f v0 = model.vert(face[ j     ]);
-            Vec3f v1 = model.vert(face[(j+1)%3]);
-
-            // Convert normalized coordinates into screen coordinates.
-            int x0 = (v0.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
-            int y0 = (v0.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
-            int x1 = (v1.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
-            int y1 = (v1.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
-
-            draw_line(x0,y0, x1,y1, color);
+            Vec3f world_coords = model.vert(face[j]);
+            screen_coords[j].x = (world_coords.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
+            screen_coords[j].y = (world_coords.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
         }
+        draw_triangle(screen_coords[0], screen_coords[1], screen_coords[2], color);
+    }
+}
+
+static void fill_model (Model& model, RGBAColor color)
+{
+    for (int i=0; i<model.nfaces(); ++i)
+    {
+        std::vector<int> face = model.face(i);
+        Vec2i screen_coords[3];
+        for (int j=0; j<3; j++)
+        {
+            Vec3f world_coords = model.vert(face[j]);
+            screen_coords[j].x = (world_coords.x + 1.0f) * (float)RENDERBUFFER_WIDTH  / 2.0f;
+            screen_coords[j].y = (world_coords.y + 1.0f) * (float)RENDERBUFFER_HEIGHT / 2.0f;
+        }
+        fill_triangle(screen_coords[0], screen_coords[1], screen_coords[2], color);
     }
 }
 
 static void render ()
 {
-    Vec2i t0[3] = {Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80)};
-    Vec2i t1[3] = {Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180)};
-    Vec2i t2[3] = {Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180)};
-
+    Model model("assets/african_head.obj");
     draw_clear(MAKE_RGB(0,0,0));
-
-    fill_triangle(t0[0], t0[1], t0[2], MAKE_RGB(255,0,0));
-    fill_triangle(t1[0], t1[1], t1[2], MAKE_RGB(0,255,0));
-    fill_triangle(t2[0], t2[1], t2[2], MAKE_RGB(0,0,255));
+    fill_model(model, MAKE_RGB(255,255,255));
 }
 
 int main (int argc, char** argv)
