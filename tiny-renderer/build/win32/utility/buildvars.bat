@@ -17,7 +17,7 @@ set LibraryDirs=
 
 set Defines=
 
-set CompilerFlags=-Zc:__cplusplus -std:c++17 -nologo -Oi -MT -Gm- -GR -EHsc -Z7 -W4
+set CompilerFlags=-Zc:__cplusplus -std:c++17 -nologo -Oi -MT -Gm- -GR -EHsc -Z7
 set LinkerFlags=-opt:ref -incremental:no
 
 set CompilerWarnings=-wd4100 -wd4505 -wd4189
