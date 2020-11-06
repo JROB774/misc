@@ -179,7 +179,7 @@ int main (int argc, char** argv)
     render();
 
     auto render_end = std::chrono::high_resolution_clock::now();
-    auto render_duration = std::chrono::duration_cast<std::chrono::microseconds>(render_end-render_start);
+    auto render_duration = std::chrono::duration_cast<std::chrono::milliseconds>(render_end-render_start);
     std::cout << "Render Took: " << render_duration.count() << "ms" << std::endl;
 
     // We don't include the write to disk as part of the render.
