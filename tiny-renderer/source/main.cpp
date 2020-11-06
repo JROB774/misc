@@ -102,9 +102,35 @@ static void draw_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
 
 static void fill_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
 {
-    draw_line(t0.x,t0.y, t1.x,t1.y, color);
-    draw_line(t1.x,t1.y, t2.x,t2.y, color);
-    draw_line(t2.x,t2.y, t0.x,t0.y, color);
+    // No height triangles are discarded.
+    if (t0.y == t1.y && t0.y == t2.y) return;
+
+    // Sort the vertices so t0 is lowest and t2 is highest.
+    if (t0.y > t1.y) std::swap(t0, t1);
+    if (t0.y > t2.y) std::swap(t0, t2);
+    if (t1.y > t2.y) std::swap(t1, t2);
+
+    int total_height = t2.y-t0.y;
+
+    for (int i=0; i<total_height; ++i)
+    {
+        // We're in the second half if we're past the middle vertex or the triangle has a flat top.
+        bool in_second_half = ((i > t1.y-t0.y) || (t1.y == t0.y));
+        int segment_height = (in_second_half) ? t2.y-t1.y : t1.y-t0.y; // Calculate the height of either the top or bottom segment.
+
+        // Get the points across the slopes of each of the two vertical lines.
+        float alpha = (float)i/total_height;
+        float beta = (float)(i-((in_second_half) ? t1.y-t0.y : 0)) / segment_height;
+        Vec2i a = t0 + (t2-t0) * alpha;
+        Vec2i b = (in_second_half) ? t1 + (t2-t1) * beta : t0 + (t1-t0) * beta;
+        if (a.x > b.x) std::swap(a,b);
+
+        // Draw the horizontal line between the two points.
+        for (int j=a.x; j<=b.x; ++j)
+        {
+            draw_pixel(j,t0.y+i, color);
+        }
+    }
 }
 
 static void draw_model (Model& model, RGBAColor color)
