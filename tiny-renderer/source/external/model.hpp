@@ -39,7 +39,6 @@ public:
                 faces_.push_back(f);
             }
         }
-        std::cerr << "# v# " << verts_.size() << " f# "  << faces_.size() << std::endl;
     }
 
     Model::~Model() {

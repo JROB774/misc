@@ -14,6 +14,8 @@
 #include <cstdint>
 
 #include <algorithm>
+#include <chrono> // For timing renders.
+#include <iostream>
 
 typedef uint32_t RGBAColor;
 
@@ -21,8 +23,8 @@ typedef uint32_t RGBAColor;
 #define MAKE_RGBA(r,g,b,a) ((RGBAColor)((((a   )<<24)|((b)<<16)|((g)<<8)|(r))))
 #define MAKE_RGB( r,g,b)   ((RGBAColor)((((0xFF)<<24)|((b)<<16)|((g)<<8)|(r))))
 
-static constexpr int RENDERBUFFER_WIDTH = 800;
-static constexpr int RENDERBUFFER_HEIGHT = 800;
+static constexpr int RENDERBUFFER_WIDTH = 200;
+static constexpr int RENDERBUFFER_HEIGHT = 200;
 
 static RGBAColor gRenderbuffer[RENDERBUFFER_WIDTH*RENDERBUFFER_HEIGHT];
 
@@ -91,6 +93,20 @@ static void draw_line (int x0, int y0, int x1, int y1, RGBAColor color)
     }
 }
 
+static void draw_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
+{
+    draw_line(t0.x,t0.y, t1.x,t1.y, color);
+    draw_line(t1.x,t1.y, t2.x,t2.y, color);
+    draw_line(t2.x,t2.y, t0.x,t0.y, color);
+}
+
+static void fill_triangle (Vec2i t0, Vec2i t1, Vec2i t2, RGBAColor color)
+{
+    draw_line(t0.x,t0.y, t1.x,t1.y, color);
+    draw_line(t1.x,t1.y, t2.x,t2.y, color);
+    draw_line(t2.x,t2.y, t0.x,t0.y, color);
+}
+
 static void draw_model (Model& model, RGBAColor color)
 {
     for (int i=0; i<model.nfaces(); ++i)
@@ -112,12 +128,30 @@ static void draw_model (Model& model, RGBAColor color)
     }
 }
 
-int main (int argc, char** argv)
+static void render ()
 {
-    Model model("assets/african_head.obj");
+    Vec2i t0[3] = {Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80)};
+    Vec2i t1[3] = {Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180)};
+    Vec2i t2[3] = {Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180)};
 
     draw_clear(MAKE_RGB(0,0,0));
-    draw_model(model, MAKE_RGB(255,255,255));
+
+    fill_triangle(t0[0], t0[1], t0[2], MAKE_RGB(255,0,0));
+    fill_triangle(t1[0], t1[1], t1[2], MAKE_RGB(0,255,0));
+    fill_triangle(t2[0], t2[1], t2[2], MAKE_RGB(0,0,255));
+}
+
+int main (int argc, char** argv)
+{
+    auto render_start = std::chrono::high_resolution_clock::now();
+
+    render();
+
+    auto render_end = std::chrono::high_resolution_clock::now();
+    auto render_duration = std::chrono::duration_cast<std::chrono::microseconds>(render_end-render_start);
+    std::cout << "Render Took: " << render_duration.count() << "ms" << std::endl;
+
+    // We don't include the write to disk as part of the render.
     draw_display();
 
     return 0;
