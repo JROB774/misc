@@ -26,3 +26,5 @@ emscripten/**/*.wasm
 emscripten/**/*.js
 emscripten/**/*.html
 emscripten/**/*.data
+
+multithreading/**/*.log
