@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-void wait (std::string name, int count)
+void wait (std::string& name, int count) // Even though it is a reference, thread values are always passed by value unless std::move, std::ref, etc. are used.
 {
     using namespace std::literals::chrono_literals;
     std::cout << "Started Thread " << name << " (" << count << ")" << std::endl;
